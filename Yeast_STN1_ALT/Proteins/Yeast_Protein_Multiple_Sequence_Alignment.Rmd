@@ -1,0 +1,50 @@
+---
+title: "Untitled"
+author: "Dave_Halvorsen"
+date: "December 31, 2018"
+output: html_document
+---
+
+```{r}
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+# BiocManager::install("msa", version = "3.8")
+```
+
+
+```{r}
+setwd("/media/david/Linux/Introns_Exons_and_Promoters/Yeast_STN1_ALT/Proteins")
+
+library(msa)
+All_Yeast_STN1_Protein <- "All_Yeast_STN1_Protein.fasta"
+All_Yeast_STN1_Protein <- readDNAStringSet(All_Yeast_STN1_Protein)
+All_Yeast_STN1_Protein_alignment <- msa(All_Yeast_STN1_Protein)
+All_Yeast_STN1_Protein_alignment
+```
+
+```{r}
+print(All_Yeast_STN1_Protein_alignment, show="complete")
+```
+
+```{r}
+msaPrettyPrint(All_Yeast_STN1_Protein_alignment, output="pdf", showNames="none",
+showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
+```
+
+
+```{r}
+Celegans_POT1_proteins <- "Klactis_and_Human_STN1_Proteins.fasta"
+Celegans_POT1_proteins_AA <- readAAStringSet(Celegans_POT1_proteins)
+Celegans_POT1_protein_alignment <- msa(Celegans_POT1_proteins_AA)
+Celegans_POT1_protein_alignment
+```
+
+```{r}
+print(Celegans_POT1_protein_alignment, show="complete")
+```
+
+```{r}
+msaPrettyPrint(Celegans_POT1_protein_alignment, output="pdf", showNames="none",
+showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
+```
+

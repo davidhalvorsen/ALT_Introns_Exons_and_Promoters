@@ -1,0 +1,159 @@
+---
+title: "Untitled"
+author: "Dave_Halvorsen"
+date: "January 1, 2019"
+output: html_document
+---
+
+```{r}
+hTERT_and_CpG_Island <- "NC_000005.10_hChrom5_TERT_CpG_Start.fasta"
+hTERT_and_CpG_Island_Read <- readDNAStringSet(hTERT_and_CpG_Island)
+hTERT_and_CpG_Island_Read
+typeof(hTERT_and_CpG_Island_Read)
+length(hTERT_and_CpG_Island_Read)
+item <- hTERT_and_CpG_Island_Read[0]
+
+```
+
+```{r}
+read.fasta(file = system.file("sequences/ct.fasta.gz", package = "seqinr"), 
+  seqtype = c("DNA", "AA"), as.string = FALSE, forceDNAtolower = TRUE,
+  set.attributes = TRUE, legacy.mode = TRUE, seqonly = FALSE, strip.desc = FALSE,
+  bfa = FALSE, sizeof.longlong = .Machine$sizeof.longlong,
+  endian = .Platform$endian, apply.mask = TRUE)
+
+```
+
+```{r}
+library(seqinr)
+read.fasta(file=system.file("NC_000005.10_hChrom5_TERT_CpG_Start.fasta"))
+
+```
+```{r}
+dna_file <- read.fasta("/media/david/Linux/Introns_Exons_and_Promoters/hTERT_CpG_Island/NC_000005.10_hChrom5_TERT_CpG_Start.fasta")
+# dna_file
+counter <- 1
+for (letter in dna_file) {
+  print(letter)
+  
+  if (counter >= 5) {
+    print("done")
+    break
+  }
+  counter <- counter + 1
+}
+```
+
+```{r}
+dna_file <- read.fasta("/media/david/Linux/Introns_Exons_and_Promoters/hTERT_CpG_Island/NC_000005.10_hChrom5_TERT_CpG_Start.fasta")
+individual_characters <- dnafile[[1]]
+individual_characters <- individual_characters[1:1145]
+CG_count <- 0
+GC_count <- 0
+i <- 1
+last_letter <- "starting"
+while(i <= 5) {
+  # print(i)
+  current_letter <- individual_characters[i]
+  if ((current_letter == "C") & (last_letter == "G")) {
+    CG_count <- CG_count + 1
+  }
+  if ((current_letter == "G") & (last_letter == "C")) {
+    GC_count <- GC_count + 1
+  }
+  last_letter <- current_letter
+  i <- i + 1
+}
+```
+
+```{r}
+test <- dna_file[[1]]
+pice <- test[1:1145]
+pice[55]
+```
+
+```{r}
+dna_file <- read.fasta("/media/david/Linux/Introns_Exons_and_Promoters/hTERT_CpG_Island/NC_000005.10_hChrom5_TERT_CpG_Start.fasta")
+individual_characters <- dna_file[[1]]
+#individual_characters[5]
+i <- 1
+CG_count <- 0
+GC_count <- 0
+g_count <- 0
+c_count <- 0
+for (letter in individual_characters) {
+  #print(letter)
+  i <- i + 1
+  if (letter == "g") {
+    g_count <- g_count + 1
+  }
+  if (letter == "c") {
+    c_count <- c_count + 1
+  }
+  if ((letter == "c") & (last_letter == "g")) {
+    GC_count <- GC_count + 1
+  }
+  if ((letter == "g") & (last_letter == "c")) {
+    CG_count <- CG_count + 1
+  }
+  last_letter <- letter
+  
+  
+  if (i >= 1164) {
+    break
+  }
+}
+print(100*(c_count+g_count)/1164)
+print(GC_count)
+print(CG_count)
+print(CG_count/GC_count)
+```
+
+```{r}
+placeholder <- (individual_characters[654:1163])
+length(placeholder)
+#nchar(placeholder)
+placeholder
+
+```
+
+```{r}
+dna_file <- read.fasta("/media/david/Linux/Introns_Exons_and_Promoters/hTERT_CpG_Island/NC_000005.10_hChrom5_TERT_CpG_Start.fasta")
+individual_characters <- dna_file[[1]]
+#individual_characters[5]
+i <- 1164
+CG_count <- 0
+GC_count <- 0
+g_count <- 0
+c_count <- 0
+for (letter in individual_characters) {
+  if (i <1164) {
+    next
+  }
+  #print(letter)
+  i <- i + 1
+  if (letter == "g") {
+    g_count <- g_count + 1
+  }
+  if (letter == "c") {
+    c_count <- c_count + 1
+  }
+  if ((letter == "c") & (last_letter == "g")) {
+    GC_count <- GC_count + 1
+  }
+  if ((letter == "g") & (last_letter == "c")) {
+    CG_count <- CG_count + 1
+  }
+  last_letter <- letter
+  
+  
+  if (i >= 42476) {
+    break
+  }
+}
+print(100*(c_count+g_count)/41312)
+print(GC_count)
+print(CG_count)
+print(CG_count/GC_count)
+```
+

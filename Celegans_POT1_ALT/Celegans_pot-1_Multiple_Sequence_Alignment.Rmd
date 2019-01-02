@@ -1,0 +1,48 @@
+---
+title: "Untitled"
+author: "Dave_Halvorsen"
+date: "December 31, 2018"
+output: html_document
+---
+
+```{r}
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+# BiocManager::install("msa", version = "3.8")
+```
+
+
+```{r}
+library(msa)
+Celegans_POT1_genes <- "/media/david/Linux/Introns_Exons_and_Promoters/Celegans_POT1_ALT/DNA/Celegans_POT1_genes.fasta"
+Celegans_POT1_genes_DNA <- readDNAStringSet(Celegans_POT1_genes)
+Celegans_POT1_gene_alignment <- msa(Celegans_POT1_genes_DNA)
+Celegans_POT1_gene_alignment
+```
+
+```{r}
+print(Celegans_POT1_gene_alignment, show="complete")
+```
+
+```{r}
+msaPrettyPrint(Celegans_POT1_gene_alignment, output="pdf", showNames="none",
+showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
+```
+
+
+```{r}
+Celegans_POT1_proteins <- "/media/david/Linux/Introns_Exons_and_Promoters/Celegans_POT1_ALT/Protein/Celegans_POT1_Proteins.fasta"
+Celegans_POT1_proteins_AA <- readAAStringSet(Celegans_POT1_proteins)
+Celegans_POT1_protein_alignment <- msa(Celegans_POT1_proteins_AA)
+Celegans_POT1_protein_alignment
+```
+
+```{r}
+print(Celegans_POT1_protein_alignment, show="complete")
+```
+
+```{r}
+msaPrettyPrint(Celegans_POT1_protein_alignment, output="pdf", showNames="none",
+showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
+```
+

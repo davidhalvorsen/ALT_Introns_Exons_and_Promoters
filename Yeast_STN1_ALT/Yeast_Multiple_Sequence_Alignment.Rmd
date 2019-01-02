@@ -1,0 +1,32 @@
+---
+title: "Untitled"
+author: "Dave_Halvorsen"
+date: "December 31, 2018"
+output: html_document
+---
+
+```{r}
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+# BiocManager::install("msa", version = "3.8")
+```
+
+
+```{r}
+setwd("/media/david/Linux/Introns_Exons_and_Promoters/Yeast_STN1_ALT")
+
+library(msa)
+Yeast_STN1_Genes <- "Yeast_STN1_Genes.fasta"
+Yeast_STN1_Genes_DNA <- readDNAStringSet(Yeast_STN1_Genes)
+Yeast_STN1_Genes_DNA_alignment <- msa(Yeast_STN1_Genes_DNA)
+Yeast_STN1_Genes_DNA_alignment
+```
+
+```{r}
+print(Yeast_STN1_Genes_DNA_alignment, show="complete")
+```
+
+```{r}
+msaPrettyPrint(Yeast_STN1_Genes_DNA_alignment, output="pdf", showNames="none",
+showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
+```

@@ -1,0 +1,39 @@
+---
+title: "Untitled"
+author: "Dave_Halvorsen"
+date: "December 31, 2018"
+output: html_document
+---
+
+```{r}
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+# BiocManager::install("msa", version = "3.8")
+```
+
+```{r}
+library(msa)
+mySequenceFile <- system.file("examples", "exampleAA.fasta", package="msa")
+mySequences <- readAAStringSet(mySequenceFile)
+mySequences
+typeof(mySequences)
+mySequenceFile
+```
+
+```{r}
+myFirstAlignment <- msa(mySequences)
+## use default substitution matrix
+myFirstAlignment
+```
+
+
+
+```{r}
+smallFastaFile <- system.file("/media/david/Linux/Introns_Exons_and_Promoters/Multiple_Sequence_Alignment/all_pot-1_homologs_Caenorhabditis_elegans.fasta", package = "seqinr")
+```
+
+```{r}
+library(msa)
+Celegans_POT1_genes <- system.file("/media/david/Linux/Introns_Exons_and_Promoters/Celegans_POT1_ALT/DNA/Celegans_POT1_genes.fasta")
+```
+

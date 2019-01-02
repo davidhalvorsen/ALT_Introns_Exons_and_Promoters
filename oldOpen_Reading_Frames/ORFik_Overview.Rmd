@@ -1,0 +1,291 @@
+---
+title: "ORFik_Overview"
+author: "Dave_Halvorsen"
+date: "December 18, 2018"
+output: html_document
+---
+
+# this is a tutorial on the R Package ORFik. It was written by 
+# Haakon Tjeldnes & Kornel Labun 
+```{r}
+library(ORFik)
+library(GenomicFeatures)
+```
+
+```{r}
+txdbFile <- system.file("extdata", "hg19_knownGene_sample.sqlite", 
+                        package = "GenomicFeatures")
+txdb <- loadDb(txdbFile)
+fiveUTRs <- fiveUTRsByTranscript(txdb, use.names = TRUE)
+fiveUTRs
+```
+
+
+
+```{r}
+# the tutorial code throws this error
+# Loading required namespace: BSgenome.Hsapiens.UCSC.hg19
+# Failed with error:  ‘there is no package called ‘BSgenome.Hsapiens.UCSC.hg19’’
+BiocManager::install('BSgenome.Hsapiens.UCSC.hg19')
+```
+
+
+```{r}
+if (requireNamespace("BSgenome.Hsapiens.UCSC.hg19")) {
+
+  # Extract sequences of fiveUTRs.
+  tx_seqs <- extractTranscriptSeqs(BSgenome.Hsapiens.UCSC.hg19::Hsapiens, fiveUTRs) 
+  
+  # Find all ORFs on those transcripts and get their genomic coordinates
+  fiveUTR_ORFs <- findMapORFs(fiveUTRs, tx_seqs)
+  fiveUTR_ORFs
+}
+```
+
+```{r}
+# path to example CageSeq data from hg19 heart sample
+cageData <- system.file("extdata", "cage-seq-heart.bed.bgz", 
+                        package = "ORFik")
+# get new Transcription Start Sites using CageSeq dataset
+newFiveUTRs <- reassignTSSbyCage(fiveUTRs, cageData)
+```
+
+```{r}
+newFiveUTRs
+```
+
+```{r}
+bam_file <- system.file("extdata", "ribo-seq.bam", package = "ORFik")
+footprints <- GenomicAlignments::readGAlignments(bam_file)
+```
+
+```{r}
+table(qwidth(footprints))
+```
+
+```{r}
+footprints <- footprints[qwidth(footprints) == 29]
+footprintsGR <- granges(footprints, use.mcols = TRUE)
+footprintsGR
+```
+
+```{r}
+footprintsGR <- resize(footprintsGR, 1)
+footprintsGR
+```
+
+```{r}
+gtf_file <- system.file("extdata", "annotations.gtf", package = "ORFik")
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_file, format = "gtf")
+cds <- GenomicFeatures::cdsBy(txdb, by = "tx", use.names = TRUE)
+cds[1]
+```
+
+```{r}
+txNames <- txNamesWithLeaders(txdb)
+windows <- getStartStopWindows(txdb, txNames)
+windows
+```
+
+```{r}
+hitMapStart <- metaWindow(footprintsGR, windows$start)
+hitMapStop <- metaWindow(footprintsGR, windows$stop)
+```
+
+```{r}
+# the next code block can't run. Here's the error:
+# Loading required namespace: ggplot2
+# Failed with error:  ‘there is no package called ‘ggplot2’’
+# install.packages("ggplot2")
+```
+
+
+```{r}
+if (requireNamespace("ggplot2")) {
+  library(ggplot2)
+  ggplot(hitMapStart, aes(x = factor(position), y = avg_counts, fill = factor(frame))) +
+    geom_bar(stat = "identity") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    labs(title = paste0("Length 29 over START of canonical CDS")) +
+    xlab("\nshift from first START nucleotide [bp]") +
+    ylab("Averaged counts") +
+    guides(fill = FALSE)
+}
+```
+
+```{r}
+if (requireNamespace("ggplot2")) {
+  ggplot(hitMapStop, aes(x = factor(position), y = avg_counts, fill = factor(frame))) +
+    geom_bar(stat = "identity") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    labs(title = paste0("Length 29 over STOP of canonical CDS")) +
+    xlab("\nshift from last STOP nucleotide [bp]") +
+    ylab("Averaged counts") +
+    guides(fill = FALSE)
+}
+```
+
+```{r}
+shifts <- detectRibosomeShifts(footprints, txdb, stop = TRUE)
+shifts
+```
+
+```{r}
+shiftedFootprints <- shiftFootprints(
+  footprints, shifts$fragment_length, shifts$offsets_start)
+```
+
+```{r}
+shiftedFootprints
+```
+
+```{r}
+# I can't get this code section to work
+# https://stackoverflow.com/questions/16194212/how-to-suppress-warnings-globally-in-an-r-script
+options(warn=-1)
+ if (requireNamespace("BSgenome.Hsapiens.UCSC.hg19")) {
+  library(GenomicFeatures)
+
+  # Extract sequences of fiveUTRs.
+  fiveUTRs <- fiveUTRs[1:10]
+  faFile <- BSgenome.Hsapiens.UCSC.hg19::Hsapiens
+  tx_seqs <- extractTranscriptSeqs(faFile, fiveUTRs)
+
+  # Find all ORFs on those transcripts and get their genomic coordinates
+  fiveUTR_ORFs <- findMapORFs(fiveUTRs, tx_seqs)
+  unlistedORFs <- unlistGrl(fiveUTR_ORFs)
+  # group GRanges by ORFs instead of Transcripts, use 4 first ORFs
+  fiveUTR_ORFs <- groupGRangesBy(unlistedORFs, unlistedORFs$names)[1:4]
+
+  # make some toy ribo seq and rna seq data
+  starts <- unlist(ORFik:::firstExonPerGroup(fiveUTR_ORFs), use.names = FALSE)
+  RFP <- promoters(starts, upstream = 0, downstream = 1)
+  score(RFP) <- rep(29, length(RFP)) # the original read widths
+
+  # set RNA seq to duplicate transcripts
+  RNA <- unlist(exonsBy(txdb, by = "tx", use.names = TRUE), use.names = TRUE)
+  # transcript database
+  txdb <- loadDb(txdbFile)
+  dt <- computeFeatures(fiveUTR_ORFs, RFP, RNA, txdb, faFile,
+                  orfFeatures =  TRUE)
+  print(dt)
+ }
+options(warn=0)
+```
+
+```{r}
+  # In this example we will find kozak score of cds' 
+
+  if (requireNamespace("BSgenome.Hsapiens.UCSC.hg19")) {
+
+    cds <- cdsBy(txdb, by = "tx", use.names = TRUE)[1:10]
+
+    faFile <- BSgenome.Hsapiens.UCSC.hg19::Hsapiens
+
+    kozakSequenceScore(cds, faFile, species = "human")
+
+    # A few species are pre supported, if not, make your own input pfm.
+
+    # here is an example where the human pfm is sent in again, even though
+    # it is already supported.
+
+    pfm <- t(matrix(as.integer(c(29,26,28,26,22,35,62,39,28,24,27,17,
+                                 21,26,24,16,28,32,5,23,35,12,42,21,
+                                 25,24,22,33,22,19,28,17,27,47,16,34,
+                                 25,24,26,25,28,14,5,21,10,17,15,28)),
+                    ncol = 4))
+
+   kozakSequenceScore(cds, faFile, species = pfm)
+
+  }
+```
+
+```{r}
+if (requireNamespace("BSgenome.Hsapiens.UCSC.hg19")) {
+  # the orfs are now grouped by orfs. If we want to go back to transcripts we do:
+  unlisted_ranges <- unlistGrl(fiveUTR_ORFs)
+  unlisted_ranges
+  test_ranges <- groupGRangesBy(unlisted_ranges, names(unlisted_ranges))
+  
+  # test_ranges is now grouped by transcript, but we want them grouped by ORFs:
+  # we use the orfs exon column called ($names) to group, it is made by ORFik.
+  unlisted_ranges <- unlistGrl(test_ranges)
+  test_ranges <- groupGRangesBy(unlisted_ranges, unlisted_ranges$names)
+}
+```
+
+```{r}
+if (requireNamespace("BSgenome.Hsapiens.UCSC.hg19")) {
+  # lets use the fiveUTR_ORFs
+  #1. Group by ORFs
+  unlisted_ranges <- unlistGrl(fiveUTR_ORFs)
+  ORFs <- groupGRangesBy(unlisted_ranges, unlisted_ranges$names)
+  length(ORFs)
+  #2. Remove widths < 60
+  ORFs <- ORFs[widthPerGroup(ORFs) >= 60]
+  length(ORFs)
+  #3. Keep only ORFs with at least 2 exons
+  ORFs <- ORFs[numExonsPerGroup(ORFs) > 1]
+  length(ORFs)
+  
+  #4. Keep only positive ORFs
+  ORFs <- ORFs[strandPerGroup(ORFs) == "+"]
+  # all remaining ORFs where on positive strand, so no change
+  length(ORFs)
+}
+```
+
+```{r}
+if (requireNamespace("BSgenome.Hsapiens.UCSC.hg19")) {
+  # let's use the ORFs from the previous examples
+  #1. Find the start and stop sites
+  startSites(fiveUTR_ORFs, asGR = TRUE, keep.names = TRUE, is.sorted = TRUE)
+  stopSites(fiveUTR_ORFs, asGR = TRUE, keep.names = TRUE, is.sorted = TRUE)
+  
+  #2. Lets find the start and stop codons,
+  # this takes care of potential 1 base exons etc. 
+  starts <- startCodons(fiveUTR_ORFs, is.sorted = TRUE)
+  starts
+  stops <- stopCodons(fiveUTR_ORFs, is.sorted = TRUE)
+  stops
+  
+  #3. Lets get the bases of the start and stop codons from the fasta file
+  # It's very important to check that ORFs are sorted here, else you could get 
+  # the end of the ORF instead of the beginning etc.
+  txSeqsFromFa(starts, faFile, is.sorted = TRUE)
+  txSeqsFromFa(stops, faFile, is.sorted = TRUE)
+  }
+```
+
+```{r}
+  library(Biostrings)
+  library(S4Vectors)
+  seqs <- "ATGAAATGAAGTAAATCAAAACAT" # strand with ORFs in both directions
+  # positive strands
+  pos <- findORFs(seqs, startCodon = "ATG", minimumLength = 0)
+  # negative strands
+  neg <- findORFs(reverseComplement(DNAStringSet(seqs)),
+                  startCodon = "ATG", minimumLength = 0)
+  # make GRanges since we want strand information
+  pos <- GRanges(pos, strand = "+")
+  neg <- GRanges(neg, strand = "-")
+  # as GRanges
+  res <- c(pos, neg)
+  # or merge together and make GRangesList
+  res <- split(res, seq.int(1, length(pos) + length(neg)))
+  res
+```
+
+```{r}
+res[strandBool(res)]
+```
+
+
+
+
+
+
+
+
+
+

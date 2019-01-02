@@ -1,0 +1,54 @@
+---
+title: "How to extract promoters positions"
+author: "Dave_Halvorsen"
+date: "December 18, 2018"
+output: html_document
+---
+
+# "How to extract promoters positions"" is a tutorial written by Charles JolyB
+# https://charlesjb.github.io/How_to_extract_promoters_positions/ 
+# The aim is to obtain all of the locations of the promoters for a given 
+```{r}
+# get 'TxDb.Hsapiens.UCSC.hg19.knownGene' package
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install("TxDb.Hsapiens.UCSC.hg19.knownGene", version = "3.8")
+require(TxDb.Hsapiens.UCSC.hg19.knownGene)
+# To avoid have to type the whole package name every time, we use the variable name txdb
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+```
+
+
+```{r}
+promoters(genes(txdb), upstream = 1500, downstream = 500)
+```
+
+```{r}
+txdb
+```
+
+```{r}
+promoters_txdb <- promoters(txdb)
+promoters_txdb
+```
+
+```{r}
+genes_txdb <- genes(txdb)
+promoters_txdb <- promoters(genes_txdb)
+promoters_txdb
+```
+
+```{r}
+promoters_txdb <- promoters(genes(txdb))
+promoters_txdb
+```
+
+```{r}
+unique(width(promoters_txdb))
+```
+
+```{r}
+promoters_txdb <- promoters(genes(txdb), upstream = 1500, downstream = 500)
+unique(width(promoters_txdb))
+```
+
