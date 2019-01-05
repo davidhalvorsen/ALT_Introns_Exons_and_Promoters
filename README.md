@@ -237,11 +237,9 @@ write.fasta(sequences = full_G_overhang_sequence, names = "full_G_overhang_seque
 write.fasta(sequences = full_C_overhang_sequence, names = "full_C_overhang_sequence", file.out = "full_C_overhang_sequence.fasta", open = "w", nbchar = 70, as.string = FALSE)
 ```
 
-I can't figure out how to make a pretty DNA complementary base pairing figure ... any ideas? Please let me know :) I made a simple, shortened, text version, BUT I'm not sure that it'll scale well. I might need to turn this into a figure.
+I can't figure out how to make a pretty DNA complementary base pairing figure ... any ideas? Please let me know :) I made a simple, shortened, text version:
 
-5'-GGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAG-3'
-   IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-3'-CCAATCCCAATCCCAATCCCAATCCCAATC-5'
+![G_overhang](/Assets/G_overhang.jpg "G_overhang")
 
 NOTE: I NEED TO MAKE SURE I'VE GOT THE RIGHT NUMBER FOR TELOMERE VS. SUBTELOMERE ... CHECK RESTRICTION ENZYME DATA AND READ THESE TWO PAPERS: 
 Riethman 2004 Mapping and Initial Analysis of Human Subtelomeric Sequence Assemblies
@@ -352,9 +350,7 @@ I think there are still more details that I should take into account for this id
 #### ALT Telomeres Have C-rich Overhangs
 There is some degree of 5' C-rich overhang in ALT cells. 
 
-5'-GGTTAGGGTTAGGGTTAGGGTTAGGGTTAG-3'
-   IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-3'-CCAATCCCAATCCCAATCCCAATCCCAATCCCAATCCCAATCCCAATCCCAATCCCAATC-5'
+![C_overhang](/Assets/C_overhang.jpg "C_overhang")
 
 ^I need to do a bit more reading to make an accurate model of this. Here are some good papers to check out:
 
