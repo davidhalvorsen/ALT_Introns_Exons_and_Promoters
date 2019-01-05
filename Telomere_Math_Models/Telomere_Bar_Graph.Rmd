@@ -19,3 +19,15 @@ abline(h=5000, col="red", lwd=3)
 abline(h=3000, col="black", lwd=3)
 ```
 
+```{r}
+
+equal_telomere_lengths <- list(2992, 2994, 2995, 2991, 2992, 2993, 2992, 2990, 2991, 2995, 2993, 2992, 2991, 2994, 2995, 2991, 2990, 2990, 2991, 2994, 2992, 2992, 2994, 2993, 2994, 2994, 2993, 2992, 2995, 2992, 2992, 2994, 2990, 2990, 2993, 2995, 2993, 2989, 2994, 2994, 2993, 2993, 2990, 2994, 2990, 2989, 2992, 2991, 2991, 2990, 2991, 2993, 2994, 2989, 2989, 2992, 2994, 2991, 2991, 2989, 2994, 2991, 2992, 2993, 2989, 2989, 2992, 2989, 2993, 2992, 2992, 2991, 2989, 2993, 2991, 2989, 2993, 2991, 2990, 2992, 2990, 2992, 2992, 2991, 2993, 2989, 2992, 2993, 2991, 2994, 2989, 2992)
+telomere_numbers <- 1:92
+print(equal_telomere_lengths)
+print(equal_telomere_lengths)
+typeof(equal_telomere_lengths[1])
+test <- barplot(as.numeric(equal_telomere_lengths), main="Telomere Lengths", xlab="Telomere Number", ylab="Telomere Length (bp)", ylim = c(0,15000))
+abline(h=5000, col="red", lwd=3)
+abline(h=3000, col="black", lwd=3)
+```
+

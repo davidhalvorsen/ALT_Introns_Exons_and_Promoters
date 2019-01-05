@@ -71,19 +71,9 @@ The telomere is gone!
 ```
 
 #### 92 Telomere Shortening Model
-There are 92 telomeres / human cell. That's cause there are 23 chromosomes X 2 (paired) X 2 telomeres/chrosome = 92. A DNA damage checkpoint will get triggered by the shortest telomere (Harley 2008). So a better mathematical model would take into account the distribution of telomere lengths and each individual telomere's shortening.   
+There are 92 telomeres / human cell. That's cause there are 23 chromosomes X 2 (paired) X 2 telomeres/chrosome = 92. A DNA damage checkpoint will get triggered by the shortest telomere (Harley 2008). So a better mathematical model would take into account the distribution of telomere lengths and each individual telomere's shortening. NOTE: THE RANGE OF TELOMERE LENGTHS ISN'T NECESSARILY WHAT I HAVE DEPICTED HERE. I NEED TO TAKE SUDA 2002 INTO ACCOUNT IN A FUTURE UPDATE. My intuition is that the range I've used here may be closer to the range of telomere lengths in ALT, but I need to do the math to be sure ... See table 1 of Suda 2002 for the estimated telomere lengths of chromosomes 1-22 for the GM130B cell line. 
 
-
-
-this will give range of chromosome lengths FACS
-GM130B, a spontaneously immortalized lymphoblast cell line originating from a normal male, was obtained from the NIGMS Human Genetic Cell Repository (Camden, NJ).
-search string of 'GM130B lymphoblast "telomerase"' is problematic cause GM130 antibody ... probably telomerase cause all? blood cell lines => telomerase
-https://www.abcam.com/gm130-antibody-ep892y-cis-golgi-marker-ab52649.html
-Anti-GM130 antibody [EP892Y] - cis-Golgi Marker (ab52649)
-
-Suda 2002 Interchromosomal Telomere Length Variation.pdf
-
-
+GM130B is a spontaneously immortalized lymphoblast line from a male human. It's probably TEL+ because it's of a blood stem cell lineage (I explain this thinking in a later section), but I wasn't able to answer that conclusively. The search phrase of 'GM130B lymphoblast "telomerase"' is problematic cause there is an antibody called GM130 antibody called gm130 https://www.abcam.com/gm130-antibody-ep892y-cis-golgi-marker-ab52649.html. I also tried 'GM130B lymphoblast "telomerase" -antibody', BUT there's a Rab1b and Rab1-binding protein called GM130. So I tried 'GM130B lymphoblast "telomerase" -antibody -golgi' and that didn't have any useful results. 
 
 ```python
 #!/usr/bin/env python
@@ -145,7 +135,7 @@ Telomere number 26 is only 2987 bp long.
 There is massive genomic instability and cell death!
 ```
 
-It's hard to picture that list of telomere lengths, so I've made a barplot in R. Note that the red line is for the 5 kb p53-mediated senescence and that the black line is the 3 kbp cell crisis point (Harley 2008).
+It's hard to picture that list of telomere lengths, so I've made a barplot in R. Note that the red line is for the 5 kb p53-mediated senescence and that the black line is the 3 kbp cell crisis point (Harley 2008). Note that the telomere lengths from the Python code don't match the ones I used for the R code. The R code #s are from an earlier attempt. You could use the code from the Telomere_Math_Models folder to replicate this stuff.
 
 ```r
 telomere_lengths <- list(5583, 12162, 6389, 9970, 10351, 7970, 10257, 10570, 11226, 10003, 12418, 5145, 9841, 8593, 3683, 9251, 7884, 5070, 9813, 5316, 6170, 5067, 6420, 10141, 3465, 6754, 11450, 5883, 11551, 7127, 7170, 11200, 7788, 7079, 5492, 11992, 8606, 11573, 4600, 6108, 9872, 9659, 7811, 8597, 6907, 3161, 5425, 7053, 5638, 5540, 12154, 7962, 11386, 5722, 6675, 11306, 2967, 11208, 10478, 8560, 12603, 7522, 10607, 4044, 6816, 4172, 5127, 8953, 7438, 9860, 11952, 4076, 11505, 8247, 9124, 6027, 12625, 3031, 8991, 4777, 5177, 9458, 5578, 7392, 6019, 4637, 4912, 4458, 11358, 5594, 12343, 3874)
@@ -158,6 +148,79 @@ abline(h=3000, col="black", lwd=3)
 
 ![Telomere_Shortening_Bar_Graph](/Assets/Telomere_Shortening_Bar_Graph.jpg "Telomere_Shortening_Bar_Graph")
 
+# Telomerase Extends Telomeres
+
+#### Model of Different Telomerase Levels
+Telomerase extends the shortest telomeres first (Harley 2008, Cristofari 2006). Telomerase overexpression might have an upper limit of 0.8 kb/division ... I'm not certain, but that was reported in Cristofari 2006. I've decided to make the model have an upper limit of 800 bases/division just to keep cellular resources in mind. I don't know how model the telomerase activity in Python with a great deal of biological accuracy ... 
+
+1. How much RNA template is available?
+2. How long will a telomerase enzyme be active?
+3. How do you model 3-D interactions?
+etc.,
+
+Telomerase adds 5'-GGTTAG-3' (Harley 2008), so I've decided to simplify the telomerase model to the number of times that telomerase can add 6bp of telomere to the chromosome end. Yes, it's a spherical cow kind of model, but what could I do better? Seriously, message me if you've got an idea, cause I'll try it out :) The telomere shortening model from above shortens 50 bp/ telomere for the 92 telomeres, so that's 4600 bp that is lost per division. 4600/6 = 766.6, so 6*676 bp being added per cell division would be cellular immortality. Anything lower-ish will eventually senesce. 
+
+This code is mostly the same as the last bit of telomere shortening code. I won't waste space witht he whole code again (see the Telomere_Math_Models folder). All I did was nest this while loop inside the first while loop (the one that shortens the telomeres). 
+
+```python
+    telomerase_bp_added_per_division = 0
+    telomere_bp_left_to_add = telomerase_bp_added_per_division
+    while telomere_bp_left_to_add > 0:
+        # get index for shortest telomere
+        shortest_telomere_index = current_list_of_telomere_lengths.index(min(current_list_of_telomere_lengths))
+        # get length of shortest telomere
+        length_of_shortest_telomere = current_list_of_telomere_lengths[shortest_telomere_index]
+        # add 6bp to shortest telomere
+        new_length_of_shortest_telomere = current_list_of_telomere_lengths[shortest_telomere_index] + 6
+        # change list entry at index # to new telomere length
+        current_list_of_telomere_lengths[shortest_telomere_index]=new_length_of_shortest_telomere
+        # less telomerase left
+        telomere_bp_left_to_add = telomere_bp_left_to_add - 6
+```
+
+Recall that the default setting of 0 for telomerase_bp_added_per_division. Will senesce after around 45 divisions.
+
+```sh
+It is division # 49
+This is the current list of telomere lengths: 
+[7170, 12368, 5720, 3645, 5542, 12080, 5087, 11904, 11511, 6398, 3277, 10844, 2991, 7629, 8780, 6831, 6536, 7344, 3558, 7683, 3835, 8217, 6984, 8453, 5396, 4522, 4119, 12548, 9305, 9545, 9008, 7613, 9990, 12347, 7924, 9842, 5634, 5140, 3076, 9589, 9017, 6847, 12525, 7593, 7447, 8598, 7191, 5782, 8152, 12464, 5269, 6994, 3567, 7599, 11842, 4033, 5184, 10556, 5757, 7054, 11279, 6642, 11565, 10701, 11997, 3534, 3355, 11623, 10173, 8881, 3085, 11311, 6307, 8302, 11064, 10363, 3198, 9361, 3659, 4629, 6694, 12477, 3731, 3275, 10302, 7461, 7445, 5461, 11859, 9980, 8931, 11078]
+Telomere number 4 is only 3645 bp long.
+p53-mediated senescence would be triggered, BUT p53 is mutated!
+Telomere number 11 is only 3277 bp long.
+p53-mediated senescence would be triggered, BUT p53 is mutated!
+Telomere number 13 is only 2991 bp long.
+There is massive genomic instability and cell death!
+```
+
+This is what happend when I left it alone for a little while with a telomerase_bp_added_per_division = 6*767. It got up to division number 18,601!
+
+```sh
+It is division # 18601
+This is the current list of telomere lengths: 
+[10252, 10250, 10248, 10252, 10251, 10250, 10252, 10248, 10249, 10250, 10249, 10251, 10249, 10250, 10249, 10252, 10248, 10251, 10250, 10248, 10250, 10248, 10251, 10247, 10248, 10252, 10247, 10252, 10250, 10247, 10247, 10249, 10252, 10248, 10247, 10252, 10250, 10251, 10251, 10248, 10246, 10248, 10251, 10246, 10250, 10249, 10247, 10247, 10246, 10251, 10249, 10250, 10251, 10246, 10248, 10247, 10251, 10248, 10249, 10250, 10246, 10248, 10246, 10248, 10250, 10248, 10251, 10249, 10251, 10246, 10250, 10251, 10247, 10250, 10247, 10247, 10246, 10251, 10251, 10251, 10250, 10248, 10246, 10249, 10249, 10249, 10246, 10246, 10250, 10246, 10250, 10249]
+```
+
+Here's half of that number of telomerase hexamers with telomerase_bp_added_per_division = 6*383.
+
+```sh
+It is division # 264
+This is the current list of telomere lengths: 
+[2992, 2994, 2995, 2991, 2992, 2993, 2992, 2990, 2991, 2995, 2993, 2992, 2991, 2994, 2995, 2991, 2990, 2990, 2991, 2994, 2992, 2992, 2994, 2993, 2994, 2994, 2993, 2992, 2995, 2992, 2992, 2994, 2990, 2990, 2993, 2995, 2993, 2989, 2994, 2994, 2993, 2993, 2990, 2994, 2990, 2989, 2992, 2991, 2991, 2990, 2991, 2993, 2994, 2989, 2989, 2992, 2994, 2991, 2991, 2989, 2994, 2991, 2992, 2993, 2989, 2989, 2992, 2989, 2993, 2992, 2992, 2991, 2989, 2993, 2991, 2989, 2993, 2991, 2990, 2992, 2990, 2992, 2992, 2991, 2993, 2989, 2992, 2993, 2991, 2994, 2989, 2992]
+Telomere number 1 is only 2992 bp long.
+There is massive genomic instability and cell death!
+```
+
+Remember the wild range of telomere lengths from before? I made a new bar graph with these numbers. Notice how they've all settled out!
+
+![Equal_Telomere_Shortening_Bar_Graph.jpg](/Assets/Equal_Telomere_Shortening_Bar_Graph.jpg "Equal_Telomere_Shortening_Bar_Graph.jpg")
+
+NOTE: THE RANGE OF TELOMERE LENGTHS ISN'T NECESSARILY WHAT I HAVE DEPICTED HERE. I NEED TO TAKE SUDA 2002 INTO ACCOUNT IN A FUTURE UPDATE.
+
+
+
+#### Modeling Single Stranded G-rich Tail
+
+#### Model of Inhibiting Telomerase 
 
 
 # Telomere Maintenance Mechanisms
@@ -534,4 +597,6 @@ showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
 * Kalmbach 2014 Telomere Length Reprogramming in Embryos and Stem Cells
 * Huang 2014 Telomere regulation in pluripotent stem cells
 * Dagg 2017 Extensive Proliferation of Human Cancer Cells with Ever-Shorter Telomeres
+* Suda 2002 Interchromosomal Telomere Length Variation
+* Cristofari 2006 Telomere length homeostasis requires that telomerase levels are limiting
 
