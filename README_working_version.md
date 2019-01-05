@@ -86,6 +86,180 @@ while telomeres_longer_than_3000 == True:
     current_division_number += 1
 ```
 
+
+
+But don't get too excited about telomere lengthening therapies, cause inflammation seems more of an issue
+Arai 2015 Inflammation, But Not Telomere Length, Predicts Successful Ageing at Extreme Old Age: A Longitudinal Study of Semi-supercentenarians
+
+humans 5–15 kilobases at chromosome ends 
+Blackburn, E.H. Switching and signaling at the telomere. Cell 106, 661–673
+(2001).
+
+Harley, C.B., Futcher, A.B. & Greider, C.W. Telomeres shorten during ageing of human
+fibroblasts. Nature 345, 458–460 (1990
+
+* DNA damage checkpoint at ~ 5kbp 128
+* ~1-3 kbp cell death cause massive genomic instability 128
+HARLEY 2008 GIRUE BOX 1
+
+Based on the estimates of the average subtelomere length of the TRF [98,1 l 1,127,128], the actual length of telomeres at senescence is estimated to be between 2-4 kbp,
+Counter 1996
+
+nontransformed human fibroblasts in vitro until terminal passage. tsoutherbn blot/ mean telomere lgnth decreased 2 kb w/ cumulative pop doublings
+each cell has 92 telomeres. wide length distribution. 2kb drop could mean large proportion of TTAGGG from at least one telomere
+Harley 1990 Telomeres shorten during ageing of human fibroblasts
+
+5 0 -TTAGGG-3 0 sequences ranging from 3 to 12 kb in length
+terminating in a single-stranded (ss) G-rich overhang, which is able to loop back on itself to form a secondary structure called a t-loop
+Telomeric DNA is bound by the protective six-subunit
+complex shelterin, which comprises the proteins TRF1, TRF2, POT1, TIN2, TPP1, and RAP1
+Pickett 2017 Alternative Lengthening of Telomeres: DNA Repair Pathways Converge
+
+The DNA is mostly double-stranded, but has a single-stranded termi- nus that on average is 130–210 bases long in human cells
+Cesare 2010 Alternative lengthening of telomeres models mechanism and implications  
+
+
+TERC -/- LT 10-60kb, telomere shortneing 50-100bp/division/ ESTIMATED 100-200 divisions for complete loss / 10kb shortest telomeres. stopped growing after 300 divisions.
+
+the rate of telomere shortening in mammalian cells is thought to be 50−100 bp per cell division
+Prowse, K.R. & Greider, C.W. Developmental and tissue-specific regulation of
+mouse telomerase and telomere length. Proc. Natl. Acad. Sci. USA 92, 4818–4822
+(1995).
+
+
+HUMANS At birth, telomere length is highly heterogeneous, ranging from roughly 5,000 to 15,000 base pairs
+Sanders 2013 Telomere Length in Epidemiology: A Biomarker of Aging, Age-Related Disease, Both, or Neither
+
+It is estimated that roughly 50 base pairs are lost during cell division because of the end-replication problem (29
+Proctor CJ, Kirkwood TB. Modelling telomere shortening and the role of oxidative stress. Mech Ageing Dev. 2002;123(4):351–363. [PubMed]
+
+# Telomerase Elongates Telomeres
+
+cancer telomerase processively. under nonequilibrium, telomerase acts on shortest telomeres
+DSouza 2013 Regulation of telomere length and homeostasis by telomerase enzyme processivity
+
+POT1 proteins bind the sequence 5’ TTAGGGTTAG 3’ either at a DNA end or 
+In its simplest form, the RPA exclusion model predicts that any shelterintethered protein with the ability to bind ss TTAGGG repeats can repress ATR
+signaling at telomeres
+Kratz 2018 ATR repression at telomeres by POT1a and POT1b: RPA exclusion and interference by CST
+
+The 3′-terminal sequence of most native telomeres is TTAG-3′ (37),
+Sfeir AJ, Chai W, Shay JW, Wright WE (2005) Telomere-end processing the terminal nucleotides of human chromosomes. Mol Cell 18(1):131–138
+^ which is identical to that of the MBS of POT1
+Wang 2012 Telomere- and telomerase-interacting protein that unfolds telomere G-quadruplex and promotes telomere extension in mammalian cells
+
+POT1 binds G-rich single stranded telomeric dna. crystal structure hPOT1-TTAGGGTTAG blocks telomerase. IF one telomeric repeat before 3' end, leaves 8 nucleotide 3' tail and teloerase can extend
+
+#### Telomerase Adds 5'-GGTTAG-3'
+Telomerase seems to preferentially add onto the shortest telomeres
+Harley 2008 
+
+Cristofari 2006 Telomere length homeostasis requires that telomerase levels are limiting
+telomerase overexpression elongated rate up to 0.8kb/PD LENGTH INDEPENDENT
+
+#### There is G and C Strand
+
+#### 
+
+TTAGGGTTAGGG(n)TTAG(1)
+AATCCCAATCCC(n)AATC(1)
+telomerase adds (5'-GGTTAG-3')
+Harley 2008
+
+There's a 130-210 nt tail 
+Cesare 2010
+
+The template region of TERC is 3'-CAAUCCCAAUC-5'.
+Gavory G, Farrow M, Balasubramanian S (October 2002). "Minimum length requirement of the alignment domain of human telomerase RNA to sustain catalytic activity in vitro". Nucleic Acids Res. 30 (20): 4470–80. doi:10.1093/nar/gkf575. PMC 137139. PMID 12384594.
+
+#### Therapeutically Inhibiting Telomerase is Harmful
+Harley 2008 Box 2 Structure and mechanism of action of GRN163L
+this hurts stem cells
+
+#### Extratelomeric Functions of Telomerase
+
+#### TERT Mutations
+
+Killela - 2013 - TERT promoter mutations occur frequently in gliomas and a subset of tumors derived from cells with low rates o
+^ This is the leadin for the ALT secion
+# Alternative Lengthening of Telomeres
+some propose ALT has many structures ... I think there's just one w/ many different outer faces
+
+Fig 5 NBS1 domains and connections ... get one w/ MRE11/RAD50, BUT not connection to APBs
+Wu 2003 Assembly of Functional ALT-associated Promyelocytic Leukemia Bodies Requires Nijmegen Breakage Syndrome 1
+
+# Alternative Lengthening of Telomeres Extends Telomeres
+<1 to >20kb telomeres cause HR
+Rogan, E.M. et al. Alterations in p53 and p16INK4 expression and telomere length
+during spontaneous immortalization of Li-Fraumeni syndrome fibroblasts. Mol. Cell.
+Biol. 15, 4745–4753 (1995).
+
+#### Preferential Lagging Strand Elongation
+Min 2017 Nucleic Acids Res Alternative lengthening of telomeres can be maintained by preferential elongation of lagging strands_HL
+
+#### Variant Repats
+
+Conomos 2012 Variant repeats are interspersed throughout telomeres recruit nuclear receptors in ALT cells.pdf
+
+#### BRCA2 Inhibits Recombination
+Sapir 2011 Effects of BRCA2 deficiency on telomere
+
+#### 5' C-Rich Overhangs
+Oganesian 2011 Mammalian 5′ C-Rich Telomeric Overhangs Are a Mark of Recombination-Dependent Telomere Maintenance.pdf
+
+#### Natural ALT Activity
+Kondo 2005 Dynamic rearrangement of telomeres during spermatogenesis in mice..pdf
+
+# A Third Telomere Maintenance Mechanism?
+subset of malignant neuroblastomas lack TMM . can go >200 PDs w/o senesncen
+Dagg 2017 Extensive Proliferation of Human Cancer Cells with Ever-Shorter Telomeres
+
+NOPE
+
+# Trimming Telomeres
+
+Pickett 2009 Control of telomere length by a trimming mechanism that involves generation of t-circles
+
+# Telomere Control: a Three Pronged Approach
+
+
+# Future Directions
+Start- ing from a single cell, 40 cell divisions are sufficient to generate 2 40 cells, with a mass of 1 kg. Many types of normal cells are capable of more than 40 cell divisions, which raises the question why immortalization is required for oncogenesis.
+Dagg 2017 Extensive Proliferation of Human Cancer Cells with Ever-Shorter Telomeres
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======================================================
+
+
 # Telomere Maintenance Mechanisms
 When DNA is getting copied, small end pieces aren't able to be fully copied. This is known as the End Replication Problem and is a result of Okazaki fragments incompletely covering the end of the chromosome. This is an issue for cell types that need to divide a lot, like Hematopoietic stem cells (HSC). HSCs have plenty of division to do so they can keep up with all the differentiation to make blood cells. This is why they express telomerase, which is a reverse transcriptase that adds repetitive telomeric DNA (TTAGGG)n to the ends of the chromosomes (Allsopp 2001). Did you notice that I'm citing a paper from the Weissman lab? ;)  
  
