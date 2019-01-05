@@ -4,7 +4,10 @@ import random
 # telomerase_bp_added_per_division = 6*767
 # 383 is less than half of what's required for immortality
 # telomerase_bp_added_per_division = 6*383
-telomerase_bp_added_per_division = 0
+telomerase_bp_added_per_division = 6*383
+# telomerase_bp_added_per_division = 0
+# telomerase_stopped_at_division_number = 600
+telomerase_stopped_at_division_number = 5
 shortest = 5000
 longest = 15000
 num_of_telomeres = 92
@@ -39,10 +42,9 @@ while telomeres_longer_than_3000 == True:
             break
         current_telomere_number += 1
     # adding bp with telomerase
-    # 383 is less than half of what's required for immortality
-    # telomerase_bp_added_per_division = 6*383
-    telomerase_bp_added_per_division = 0
     telomere_bp_left_to_add = telomerase_bp_added_per_division
+    if telomerase_stopped_at_division_number <= current_division_number:
+        telomere_bp_left_to_add = 0
     while telomere_bp_left_to_add > 0:
         # get index for shortest telomere
         shortest_telomere_index = current_list_of_telomere_lengths.index(min(current_list_of_telomere_lengths))

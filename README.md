@@ -151,7 +151,7 @@ abline(h=3000, col="black", lwd=3)
 # Telomerase Extends Telomeres
 
 #### Model of Different Telomerase Levels
-Telomerase extends the shortest telomeres first (Harley 2008, Cristofari 2006). Telomerase overexpression might have an upper limit of 0.8 kb/division ... I'm not certain, but that was reported in Cristofari 2006. I've decided to make the model have an upper limit of 800 bases/division just to keep cellular resources in mind. I don't know how model the telomerase activity in Python with a great deal of biological accuracy ... 
+Telomerase extends the shortest telomeres first (Harley 2008, Cristofari 2006). Telomerase overexpression might have an upper limit of 0.8 kb/division ... I'm not certain, but that was reported in Cristofari 2006. I might want to create a future update that limits to 800 bases/division just to keep cellular resources in mind. I don't know how model the telomerase activity in Python with a great deal of biological accuracy ... 
 
 1. How much RNA template is available?
 2. How long will a telomerase enzyme be active?
@@ -192,7 +192,7 @@ Telomere number 13 is only 2991 bp long.
 There is massive genomic instability and cell death!
 ```
 
-This is what happend when I left it alone for a little while with a telomerase_bp_added_per_division = 6*767. It got up to division number 18,601!
+This is what happend when I left it alone for a little while with a telomerase_bp_added_per_division = 6*767. It got up to division number 18,601! That's what people mean when they talk about cancer "immortality."
 
 ```sh
 It is division # 18601
@@ -216,12 +216,41 @@ Remember the wild range of telomere lengths from before? I made a new bar graph 
 
 NOTE: THE RANGE OF TELOMERE LENGTHS ISN'T NECESSARILY WHAT I HAVE DEPICTED HERE. I NEED TO TAKE SUDA 2002 INTO ACCOUNT IN A FUTURE UPDATE.
 
-#### Modeling Single Stranded G-rich Tail
+#### Modeling the Single Stranded G-rich Tail
+Another thing that I left out of earlier models was the G-rich and C-rich strands. I've just been describing the telomeres as having a length. They have sequence too! The G-rich strand is 5'-GGTTAG-3' and the C-rich strand is 3'-CCAATC-5'. Telomerase adds 5'-GGTTAG-3' (Harley 2008). The telomerase enzyme TERT uses the telomerase RNA 3'-CAAUCCCAAUC-5' as a template for the extension (Gavory 2002). There is a G-rich single stranded telomeric overhang of 130-210 nucleotides (Cesare 2010).
+
+I made a simple model of the G'rich overhang in R.
+
+```r
+setwd("/media/david/Linux/ALT_Introns_Exons_and_Promoters/Telomere_Math_Models")
+library(msa)
+library(seqinr)
+G_overhang_sequence <- "GGTTAG"
+C_overhang_sequence <- "CCAATC"
+reverse_complement_C_overhang_sequence <- "CTAACC"
+# 22*6 = 132 (min single stranded overhang is 130)
+# assuming 10 kbp telomere lengths, so 1666 * 6 9996 is for C strand
+# then 1666+22 is for G strand
+full_G_overhang_sequence <- paste(replicate(1688, G_overhang_sequence), collapse = "")
+full_C_overhang_sequence <- paste(replicate(1666, reverse_complement_C_overhang_sequence), collapse = "")
+write.fasta(sequences = full_G_overhang_sequence, names = "full_G_overhang_sequence", file.out = "full_G_overhang_sequence.fasta", open = "w", nbchar = 70, as.string = FALSE)
+write.fasta(sequences = full_C_overhang_sequence, names = "full_C_overhang_sequence", file.out = "full_C_overhang_sequence.fasta", open = "w", nbchar = 70, as.string = FALSE)
+```
+
+I can't figure out how to make a pretty DNA complementary base pairing figure ... any ideas? Please let me know :) I made a simple, shortened, text version, BUT I'm not sure that it'll scale well. I might need to turn this into a figure.
+
+5'-GGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAG-3'
+   IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+3'-CCAATCCCAATCCCAATCCCAATCCCAATC-5'
+
+NOTE: I NEED TO MAKE SURE I'VE GOT THE RIGHT NUMBER FOR TELOMERE VS. SUBTELOMERE ... CHECK RESTRICTION ENZYME DATA AND READ THESE TWO PAPERS: 
+Riethman 2004 Mapping and Initial Analysis of Human Subtelomeric Sequence Assemblies
+Riethman 2009 Human subtelomeric copy number variations
+Mefford 2002 The complex structure and dynamic evolution of human subtelomeres
+Suda 2002 Interchromosomal Telomere Length Variation
+Graakjaer 2003 The pattern of chromosome-specific variations in telomere length in humans is determined by inherited, telomere-near factors and is maintained throughout life
 
 #### Model of Inhibiting Telomerase 
-
-
-# Telomere Maintenance Mechanisms
 When DNA is getting copied, small end pieces aren't able to be fully copied. This is known as the End Replication Problem and is a result of Okazaki fragments incompletely covering the end of the chromosome. This is an issue for cell types that need to divide a lot, like Hematopoietic stem cells (HSC). HSCs have plenty of division to do so they can keep up with all the differentiation to make blood cells. This is why they express telomerase, which is a reverse transcriptase that adds repetitive telomeric DNA (TTAGGG)n to the ends of the chromosomes (Allsopp 2001). Did you notice that I'm citing a paper from the Weissman lab? ;)  
  
 ![telomeres-shorten-with-age](/Assets/telomeres-shorten-with-age.jpg "telomeres-shorten-with-age")
@@ -241,7 +270,61 @@ Cells that divide a lot will senesce in the absence of an active telomere mainte
 
 (Shay 2012, Harley 2008)
 
-One problem with telomerase inhibitors is that they have been reported to cause problems with blood stem cells (Hu 2017). Another problem with the telomerase inhibition approach is that approximately 10-15% of cancers use the Alterantive Lengthening of Telomeres (ALT) to extend telomeres, some cancers won't be treated with these anti-telomerase therapies. But, it's way worse of a problem than that! Tumors have been reported to use both ALT and TEL simultaneously (Gocha 2013) AND in vitro inhibition of telomerase selects for ALT activity (Sahin 2012). 
+This model is the same as the telomere shortening + telomerase model AND you can choose a cell division number for telomerase to be inhibited at. There are two scenarios that I want to model:
+
+1) cancers with relatively short telomeres (these will divide out without telomerase)
+2) cancers with very long telomeres (these might be able to keep dividing in the absence of telomerase)
+3) cancers with telomeres that are equilavent to stem cell telomeres (anti-telomerase therapy will exhaust the stem cell pools before the cancer)
+
+I bring up point 3 because one problem with telomerase inhibitors is that they have been reported to cause problems with blood stem cells (Hu 2017). This update only needed three lines of code. I added a varible for the division number for telomerase to stop at and an if condition that sets telomerase activity to 0 AFTER that division number has been reached. 
+
+```python
+telomerase_stopped_at_division_number = 30
+telomere_bp_left_to_add = telomerase_bp_added_per_division
+    if telomerase_stopped_at_division_number <= current_division_number:
+        telomere_bp_left_to_add = 0
+    while telomere_bp_left_to_add > 0:
+        # get index for shortest telomere
+        shortest_telomere_index = current_list_of_telomere_lengths.index(min(current_list_of_telomere_lengths))
+        # get length of shortest telomere
+        length_of_shortest_telomere = current_list_of_telomere_lengths[shortest_telomere_index]
+        # add 6bp to shortest telomere
+        new_length_of_shortest_telomere = current_list_of_telomere_lengths[shortest_telomere_index] + 6
+        # change list entry at index # to new telomere length
+        current_list_of_telomere_lengths[shortest_telomere_index]=new_length_of_shortest_telomere
+        # less telomerase left
+        telomere_bp_left_to_add = telomere_bp_left_to_add - 6
+    # setting up for next division
+    current_list_of_telomere_lengths = [telomere-50 for telomere in current_list_of_telomere_lengths]
+    current_division_number += 1
+```
+
+NOTE: I SHOULD CHANGE THE CODE TO HAVE A TELOMERE LENGTH SEEDING NUMBER. IT'S CURRENTLY GETTING LONG TELOMERE LENGTHS BY HAVING A HIGH INITIAL TELOMERASE LEVEL AND THE TELOMERASE INHIBITION STARTED AT LATER CELL DIVISIONS. THE CONCEPTS ARE THE SAME, BUT IT'S NOT AS ELEGANT. I SHOULD ALSO ADD A STEM CELL TELOMERE LENGTH FOR THE STEM CELL PROBLEMS OF ANTI-TELOMERASE. I NEED TO GET AN ESTIMATE OF CANCER GROWTH OVER DIVISION NUMBER, SO I CAN ADD THAT TO THE SHORT TELOMERE CANCER INHIBITION CASE.
+
+Cancers with relatively short telomeres (these will divide out without telomerase):
+
+```sh
+It is division # 72
+This is the current list of telomere lengths: 
+[5309, 3215, 8597, 6167, 5741, 11130, 7328, 2978, 7239, 4484, 6188, 5785, 3948, 2978, 4771, 4212, 3670, 10457, 10790, 2975, 2976, 10914, 7447, 7491, 3936, 9322, 3866, 7015, 2978, 2978, 7193, 3883, 10189, 5269, 7772, 9935, 9335, 5016, 8568, 3551, 4133, 2976, 4655, 5280, 2975, 7598, 6102, 3259, 2977, 2979, 11118, 2977, 4284, 9731, 2978, 2979, 7753, 8627, 3875, 4769, 9755, 9210, 3822, 5761, 3288, 10555, 6506, 4434, 4774, 9741, 3911, 2980, 4942, 7019, 4712, 2976, 9085, 3298, 6611, 2980, 10056, 3279, 9046, 2978, 8006, 4973, 8171, 8519, 6429, 10526, 10572, 4949]
+Telomere number 2 is only 3215 bp long.
+p53-mediated senescence would be triggered, BUT p53 is mutated!
+Telomere number 8 is only 2978 bp long.
+There is massive genomic instability and cell death!
+```
+
+Cancers with very long telomeres (these might be able to keep dividing in the absence of telomerase). telomerase_stopped_at_division_number = 600 AND telomerase_bp_added_per_division = 6*767
+
+```sh
+It is division # 737
+This is the current list of telomere lengths: 
+[2988, 2986, 2988, 2984, 2985, 2984, 2987, 2986, 2985, 2984, 2985, 2986, 2987, 2988, 2984, 2989, 2989, 2985, 2987, 2985, 2986, 2986, 2987, 2985, 2987, 2989, 2988, 2988, 2985, 2984, 2988, 2985, 2988, 2988, 2988, 2986, 2986, 2985, 2984, 2986, 2986, 2983, 2983, 2984, 2986, 2986, 2988, 2988, 2985, 2985, 2983, 2983, 2984, 2985, 2984, 2988, 2983, 2984, 2983, 2987, 2988, 2986, 2984, 2983, 2985, 2984, 2986, 2984, 2988, 2985, 2983, 2984, 2983, 2988, 2985, 2988, 2988, 2987, 2988, 2988, 2987, 2988, 2985, 2987, 2986, 2986, 2987, 2985, 2986, 2985, 2988, 2983]
+Telomere number 1 is only 2988 bp long.
+There is massive genomic instability and cell death!
+```
+
+# Alternative Lengthening of Telomeres (ALT) Extends Telomeres
+Stem cell telomerase isn't the only problem with the telomerase inhibition approach. Approximately 10-15% of cancers use the Alterantive Lengthening of Telomeres (ALT) to extend telomeres, some cancers won't be treated with these anti-telomerase therapies. But, it's way worse of a problem than that! Tumors have been reported to use both ALT and TEL simultaneously (Gocha 2013) AND in vitro inhibition of telomerase selects for ALT activity (Sahin 2012). 
 
 ![TEL_ALT_Reversible](/Assets/TEL_ALT_Reversible.jpg "TEL_ALT_Reversible")
 
@@ -252,6 +335,122 @@ On an interesting note, there is a high frequency of cancers with a Mesenchymal 
 ![stem_cell_ALT.jpg](/Assets/stem_cell_ALT.jpg "stem_cell_ALT.jpg")
 
 (Kalmbach 2014)
+
+#### ALT Telomeres are Long and Heterogenous
+ALT telomeres have long, heterogenous telomeres. They can range from less than 1 kbp (Rogan 1995) all the way up to 50 kbp (Bryan 1995). There is a rapid addition of telomeric sequences to short telomeres AND a rapid deletion of telomeric sequences from the long telomeres. This suggests recombinogenic behavior (Murnane 1994). ALT cells seem to be extending their telomeres through this process, but the mechanism isn't completely understood yet (Cesare 2010).  
+
+I think there are still more details that I should take into account for this idea, but I'm not sure when I'll have the time for that. The simplified model I have in mind will:
+
+1) range in initialized telomere length from 500 bp to 50,000 bp
+2) have rapid kbp exchanges between short and long telomeres
+3) result in overall telomere extension on the short telomeres that are on the recombinogenic receiving end
+
+```python
+# I HAVEN'T MADE THIS YET.
+```
+
+#### ALT Telomeres Have C-rich Overhangs
+There is some degree of 5' C-rich overhang in ALT cells. 
+
+5'-GGTTAGGGTTAGGGTTAGGGTTAGGGTTAG-3'
+   IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+3'-CCAATCCCAATCCCAATCCCAATCCCAATCCCAATCCCAATCCCAATCCCAATCCCAATC-5'
+
+^I need to do a bit more reading to make an accurate model of this. Here are some good papers to check out:
+
+* Oganesian 2011 Mammalian 5 0 C-Rich Telomeric Overhangs Are a Mark of Recombination-Dependent Telomere Maintenance
+* Min 2017 Alternative lengthening of telomeres can be maintained by preferential elongation of lagging strands
+* Mao 2016 Homologous recombination-dependent repair of telomeric DSBs in proliferating human cells
+
+The altered C-rich overhangs involved in ALT will likely prevent POT-1 from binding effectively to the telomeres. This is a great segway into the ALT literature! For example, POT-1 deficiency creates ALT in C. elegans!
+
+# POT-1 Deficiency Creates ALT+ C. Elegans Strains
+Telomeres cap linear chromosomes because DNA polymerase can't completely copy chromosomes. Telomerase adds telomeric repeats to the ends of linear chromosomes with reverse transcription. Most human cancers have long, heterogenous telomeres. Telomere shortening leads to senescence and potentially crisis. Cancer emerges as part of massive cell death and genomic rearrangements after crisis. 10-15% of cancers are estimated to use ALT (Cheng 2012). 
+
+ALT can happen in Caenorhabditis elegans! Mammalian POT1 has homologs in C. elegans as pot-1 (CeOB2) and pot-2 (CeOB1). What's the deal with the reversing of 1 and 2? That's how it's reported in the paper ... it's odd. pot-1 mutant C. elegans have HUGE telomere lengths while pot-2 mutants have normal telomere lengths. The authors of Cheng 2012 created a variety of mutants in C. elegans.  The trt-1 C. elegans mutant has a deletion in telomerase reverse transcriptase. trt-1 & pot-2 absence led to ALT+ Caenorhabditis elegans with normal telomere lengths. trt-1 and pot-1 mutants were found to have long, heterogenous telomere lengths like those seen in human ALT. Here is the survival figure showing that C. elegans can survive in the absence of telomerase reverse transcriptase.
+
+![Celegans_ALT_Generation_Survival](/Assets/Celegans_ALT_Generation_Survival.jpg "Celegans_ALT_Generation_Survival")
+
+(Cheng 2012)
+
+#### Multiple Sequence Alignment of pot-1 Genes
+YES, pot-2 was the central point of the paper, but it won't be as fun to play with because it only has one isoform. I picked pot-1 cause there is a lot of cool stuff to play with. There were a lot of workup steps to get all of the sequences ... It would take a long while to review them. Essentially, I looked up the proteins on UniProt and then grabbed the DNA files from NCBI GenBank and WormBase. Check out the Celegans_POT1_ALT folder for the file names of everything. The file containing all the C. elegans genes is Celegans_POT1_genes.fasta. I used the R package "msa" for multiple sequence alignment with this code:
+
+```r
+library(msa)
+Celegans_POT1_genes <- "/media/david/Linux/Introns_Exons_and_Promoters/Celegans_POT1_ALT/DNA/Celegans_POT1_genes.fasta"
+Celegans_POT1_genes_DNA <- readDNAStringSet(Celegans_POT1_genes)
+Celegans_POT1_gene_alignment <- msa(Celegans_POT1_genes_DNA)
+msaPrettyPrint(Celegans_POT1_gene_alignment, output="pdf", showNames="none",
+showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
+```
+
+The aligned sequences aren't very pretty ... I decided not to include sequence labels cause it shortened the available nucleotide space for each new line. Here's part of the output for you to get the idea of the work:
+
+![Celegans_POT1_gene_alignment](/Assets/Celegans_POT1_gene_alignment.jpg "Celegans_POT1_gene_alignment")
+
+#### Multiple Sequence Alignment of pot-1 Proteins
+I grabbed all the C elegans pot-1 isoform sequences from UniProt. You can check them out in Celegans_POT1_ALT/Protein. The file containing all of the sequences is Celegans_POT1_Proteins.fasta. I aligned all of the proteins with code that is similar to the DNA alignment code:
+
+```r
+Celegans_POT1_proteins <- "/media/david/Linux/Introns_Exons_and_Promoters/Celegans_POT1_ALT/Protein/Celegans_POT1_Proteins.fasta"
+Celegans_POT1_proteins_AA <- readAAStringSet(Celegans_POT1_proteins)
+Celegans_POT1_protein_alignment <- msa(Celegans_POT1_proteins_AA)
+Celegans_POT1_protein_alignment
+msaPrettyPrint(Celegans_POT1_protein_alignment, output="pdf", showNames="none",
+showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
+```
+
+This alignment looks great! You can see all of the alignments between the different pot-1 isoforms :)
+
+![Celegans_POT1_protein_alignment](/Assets/Celegans_POT1_protein_alignment.jpg "Celegans_POT1_protein_alignment")
+
+#### Displaying pot-1 Open Reading Frames
+I used code from the BioPython Tutorial to identify the C. elegans pot-1 gene Open Reading Frames AND to report the translated proteins! Compare this to the last section to see that the the DNA -> Protein translations all have the correct lengths! The code is from http://biopython.org/DIST/docs/tutorial/Tutorial.html in the section titled "20.1.13. Identifying open reading frames". You should check this code out! It can identify Open Reading Frames in the +/- strand AND in three different reading frames, SO IT DOES ALL 6 FRAMES!!! I re-used the code four times (instead of making a function, haha). Here's part of the code that I used:
+
+```python
+#!/usr/bin/env python
+
+from Bio import SeqIO
+# record = SeqIO.read("NC_005816.fna", "fasta")
+file_0 = "NM_001361730.1_Caenorhabditis_elegans_pot-1_gene_homolog.fasta"
+file_1 = "NM_001361731.1_Caenorhabditis_elegans_pot-1_gene_homolog.fasta"
+file_2 = "NM_001361732.1_Caenorhabditis_elegans_pot-1_gene_homolog.fasta"
+file_3 = "NM_066157.3_pot-1_NCBI_DNA_matchesP42001_Celegans.fasta"
+
+print("")
+print("NM_001361730.1_Caenorhabditis_elegans_pot-1_gene_homolog.fasta")
+record = SeqIO.read(file_0, "fasta")
+table = 11
+min_pro_len = 150
+
+for strand, nuc in [(+1, record.seq), (-1, record.seq.reverse_complement())]:
+    for frame in range(3):
+        length = 3 * ((len(record)-frame) // 3) #Multiple of three
+        for pro in nuc[frame:frame+length].translate(table).split("*"):
+            if len(pro) >= min_pro_len:
+                print("%s...%s - length %i, strand %i, frame %i" \
+                % (pro[:30], pro[-3:], len(pro), strand, frame))
+```
+
+![Displaying_pot-1_Open_Reading_Frames](/Assets/Displaying_pot-1_Open_Reading_Frames.jpg "Displaying_pot-1_Open_Reading_Frames")
+
+#### Discussing C. elegans pot-1 Alternative Splicing
+WormBase has three isoforms for pot-1 in C. elegans https://wormbase.org/species/c_elegans/gene/WBGene00015105#0-9g-3
+
+![WormBase_pot-1_Celegans_Isoforms](/Assets/WormBase_pot-1_Celegans_Isoforms.jpg "WormBase_pot-1_Celegans_Isoforms")
+
+Transcript B0280.10a.1 is 1216 nucleotides in length and codes for a 400 amino acid protien. The WormBase curators used RNA-seq data from Boeck 2016 to alter the original WormBase entry to include the published alternate intron splicing. You can see from the table that Exons 1-10 are part of this pot-1 isoform.
+
+![B0280.10a.1_Celegans_pot-1_isoformA_1203NT_400AA](/Assets/B0280.10a.1_Celegans_pot-1_isoformA_1203NT_400AA.jpg "B0280.10a.1_Celegans_pot-1_isoformA_1203NT_400AA")
+
+Transcript B0280.10b.1 is 462 nucleotides in length and it codes for a 153 amino acid protein. You can see from the table that Exons 1-4 are part of this pot-1 isoform. Boeck 2016 goes into more detail about the alternative intron that causes alternative splicing here. 
+
+![B0280.10b.1_Celegans_pot-1_isoformB_462NT_153AA](/Assets/B0280.10b.1_Celegans_pot-1_isoformB_462NT_153AA.jpg "B0280.10b.1_Celegans_pot-1_isoformB_462NT_153AA")
+
+Transcript B0280.10c.1 is 1140 nucleotides long and it codes for a 379 amino acid protein. You can see from the table that Exons 1-10 make it into this protein isoform.
+
+![B0280.10c.1_Celegans_pot-1_isoformC_1140NT_379AA](/Assets/B0280.10c.1_Celegans_pot-1_isoformC_1140NT_379AA.jpg "B0280.10c.1_Celegans_pot-1_isoformC_1140NT_379AA")
 
 # ATRX Exon Deletion is Common in ALT
 This project can be found in the Human_ATRX_ALT folder. ATRX gene mutations are found in a range of cancers. 10-15% of cancers are estimated to use ALT. ALT involves homologous recombination-based telomere elongation. Inactivating mutations in either ATRX or DAXX are found in many cancers. Depletion of ATRX seems insufficient to trigger ALT, but it does seem to play a key role in the ALT pathway. The absence of ATRX might lead to the failure of stalled replication forks to get resolved. The required fork restart would require homologus recombination and could jumpstart the ALT pathway (Clynes 2013). ALT involves a template-based lengthening of telomeres with homologous recombination. The genetic and epigenetic changes are not full understood. Lovejoy 2012 reported that ATRX gene mutations are a common feature of ALT. Specifically 19/22 ALT+ cell lines had an issue with the expression of ATRX or DAXX (Lovejoy 2012). See the Lovejoy 2012 supplementary information for the Excel table of Exon deletions in ALT cell lines. 
@@ -417,99 +616,6 @@ The lazily unlabeled output is:
 
 My GC content is 58.5 % and the ratio of CpG/GpC is 0.54. Recall that Dessain 2000 reported that the hTERT CpG island has a GC content of 74% and a CG:GC ratio of 0.87. THE REGION THAT IS NOT A CpG ISLAND IS 15.5% off of the GC content and 0.33 off of the CpG/GpC. I could dig into this with more statistical rigor, but I think you get the idea. I'M EXCITED!!! This was a really cool biological programming exercise!!! :D
 
- 
-
-
-
-# POT-1 Deficiency Creates ALT+ C. Elegans Strains
-Telomeres cap linear chromosomes because DNA polymerase can't completely copy chromosomes. Telomerase adds telomeric repeats to the ends of linear chromosomes with reverse transcription. Most human cancers have long, heterogenous telomeres. Telomere shortening leads to senescence and potentially crisis. Cancer emerges as part of massive cell death and genomic rearrangements after crisis. 10-15% of cancers are estimated to use ALT (Cheng 2012). 
-
-ALT can happen in Caenorhabditis elegans! Mammalian POT1 has homologs in C. elegans as pot-1 (CeOB2) and pot-2 (CeOB1). What's the deal with the reversing of 1 and 2? That's how it's reported in the paper ... it's odd. pot-1 mutant C. elegans have HUGE telomere lengths while pot-2 mutants have normal telomere lengths. The authors of Cheng 2012 created a variety of mutants in C. elegans.  The trt-1 C. elegans mutant has a deletion in telomerase reverse transcriptase. trt-1 & pot-2 absence led to ALT+ Caenorhabditis elegans with normal telomere lengths. trt-1 and pot-1 mutants were found to have long, heterogenous telomere lengths like those seen in human ALT. Here is the survival figure showing that C. elegans can survive in the absence of telomerase reverse transcriptase.
-
-![Celegans_ALT_Generation_Survival](/Assets/Celegans_ALT_Generation_Survival.jpg "Celegans_ALT_Generation_Survival")
-
-(Cheng 2012)
-
-#### Multiple Sequence Alignment of pot-1 Genes
-YES, pot-2 was the central point of the paper, but it won't be as fun to play with because it only has one isoform. I picked pot-1 cause there is a lot of cool stuff to play with. There were a lot of workup steps to get all of the sequences ... It would take a long while to review them. Essentially, I looked up the proteins on UniProt and then grabbed the DNA files from NCBI GenBank and WormBase. Check out the Celegans_POT1_ALT folder for the file names of everything. The file containing all the C. elegans genes is Celegans_POT1_genes.fasta. I used the R package "msa" for multiple sequence alignment with this code:
-
-```r
-library(msa)
-Celegans_POT1_genes <- "/media/david/Linux/Introns_Exons_and_Promoters/Celegans_POT1_ALT/DNA/Celegans_POT1_genes.fasta"
-Celegans_POT1_genes_DNA <- readDNAStringSet(Celegans_POT1_genes)
-Celegans_POT1_gene_alignment <- msa(Celegans_POT1_genes_DNA)
-msaPrettyPrint(Celegans_POT1_gene_alignment, output="pdf", showNames="none",
-showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
-```
-
-The aligned sequences aren't very pretty ... I decided not to include sequence labels cause it shortened the available nucleotide space for each new line. Here's part of the output for you to get the idea of the work:
-
-![Celegans_POT1_gene_alignment](/Assets/Celegans_POT1_gene_alignment.jpg "Celegans_POT1_gene_alignment")
-
-#### Multiple Sequence Alignment of pot-1 Proteins
-I grabbed all the C elegans pot-1 isoform sequences from UniProt. You can check them out in Celegans_POT1_ALT/Protein. The file containing all of the sequences is Celegans_POT1_Proteins.fasta. I aligned all of the proteins with code that is similar to the DNA alignment code:
-
-```r
-Celegans_POT1_proteins <- "/media/david/Linux/Introns_Exons_and_Promoters/Celegans_POT1_ALT/Protein/Celegans_POT1_Proteins.fasta"
-Celegans_POT1_proteins_AA <- readAAStringSet(Celegans_POT1_proteins)
-Celegans_POT1_protein_alignment <- msa(Celegans_POT1_proteins_AA)
-Celegans_POT1_protein_alignment
-msaPrettyPrint(Celegans_POT1_protein_alignment, output="pdf", showNames="none",
-showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
-```
-
-This alignment looks great! You can see all of the alignments between the different pot-1 isoforms :)
-
-![Celegans_POT1_protein_alignment](/Assets/Celegans_POT1_protein_alignment.jpg "Celegans_POT1_protein_alignment")
-
-#### Displaying pot-1 Open Reading Frames
-I used code from the BioPython Tutorial to identify the C. elegans pot-1 gene Open Reading Frames AND to report the translated proteins! Compare this to the last section to see that the the DNA -> Protein translations all have the correct lengths! The code is from http://biopython.org/DIST/docs/tutorial/Tutorial.html in the section titled "20.1.13. Identifying open reading frames". You should check this code out! It can identify Open Reading Frames in the +/- strand AND in three different reading frames, SO IT DOES ALL 6 FRAMES!!! I re-used the code four times (instead of making a function, haha). Here's part of the code that I used:
-
-```python
-#!/usr/bin/env python
-
-from Bio import SeqIO
-# record = SeqIO.read("NC_005816.fna", "fasta")
-file_0 = "NM_001361730.1_Caenorhabditis_elegans_pot-1_gene_homolog.fasta"
-file_1 = "NM_001361731.1_Caenorhabditis_elegans_pot-1_gene_homolog.fasta"
-file_2 = "NM_001361732.1_Caenorhabditis_elegans_pot-1_gene_homolog.fasta"
-file_3 = "NM_066157.3_pot-1_NCBI_DNA_matchesP42001_Celegans.fasta"
-
-print("")
-print("NM_001361730.1_Caenorhabditis_elegans_pot-1_gene_homolog.fasta")
-record = SeqIO.read(file_0, "fasta")
-table = 11
-min_pro_len = 150
-
-for strand, nuc in [(+1, record.seq), (-1, record.seq.reverse_complement())]:
-    for frame in range(3):
-        length = 3 * ((len(record)-frame) // 3) #Multiple of three
-        for pro in nuc[frame:frame+length].translate(table).split("*"):
-            if len(pro) >= min_pro_len:
-                print("%s...%s - length %i, strand %i, frame %i" \
-                % (pro[:30], pro[-3:], len(pro), strand, frame))
-```
-
-![Displaying_pot-1_Open_Reading_Frames](/Assets/Displaying_pot-1_Open_Reading_Frames.jpg "Displaying_pot-1_Open_Reading_Frames")
-
-#### Discussing C. elegans pot-1 Alternative Splicing
-WormBase has three isoforms for pot-1 in C. elegans https://wormbase.org/species/c_elegans/gene/WBGene00015105#0-9g-3
-
-![WormBase_pot-1_Celegans_Isoforms](/Assets/WormBase_pot-1_Celegans_Isoforms.jpg "WormBase_pot-1_Celegans_Isoforms")
-
-Transcript B0280.10a.1 is 1216 nucleotides in length and codes for a 400 amino acid protien. The WormBase curators used RNA-seq data from Boeck 2016 to alter the original WormBase entry to include the published alternate intron splicing. You can see from the table that Exons 1-10 are part of this pot-1 isoform.
-
-![B0280.10a.1_Celegans_pot-1_isoformA_1203NT_400AA](/Assets/B0280.10a.1_Celegans_pot-1_isoformA_1203NT_400AA.jpg "B0280.10a.1_Celegans_pot-1_isoformA_1203NT_400AA")
-
-Transcript B0280.10b.1 is 462 nucleotides in length and it codes for a 153 amino acid protein. You can see from the table that Exons 1-4 are part of this pot-1 isoform. Boeck 2016 goes into more detail about the alternative intron that causes alternative splicing here. 
-
-![B0280.10b.1_Celegans_pot-1_isoformB_462NT_153AA](/Assets/B0280.10b.1_Celegans_pot-1_isoformB_462NT_153AA.jpg "B0280.10b.1_Celegans_pot-1_isoformB_462NT_153AA")
-
-Transcript B0280.10c.1 is 1140 nucleotides long and it codes for a 379 amino acid protein. You can see from the table that Exons 1-10 make it into this protein isoform.
-
-![B0280.10c.1_Celegans_pot-1_isoformC_1140NT_379AA](/Assets/B0280.10c.1_Celegans_pot-1_isoformC_1140NT_379AA.jpg "B0280.10c.1_Celegans_pot-1_isoformC_1140NT_379AA")
-
-
 # STN1 Mutation Triggers ALT in Yeast
 ADDED STUFF
 Counter 1996 The roles of telomeres and telomerase in cell life span
@@ -597,4 +703,8 @@ showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
 * Dagg 2017 Extensive Proliferation of Human Cancer Cells with Ever-Shorter Telomeres
 * Suda 2002 Interchromosomal Telomere Length Variation
 * Cristofari 2006 Telomere length homeostasis requires that telomerase levels are limiting
+* Gavory 2002 Minimum length requirement of the alignment domain of human telomerase RNA to sustain catalytic activity in vitro
+* Murnane 1994 Telomere dynamics in an immortal human cell line
+* Telomere elongation in immortal human cells without detectable telomerase activity
+
 

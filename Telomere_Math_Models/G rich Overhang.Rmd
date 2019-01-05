@@ -1,0 +1,22 @@
+---
+title: "G rich Overhang"
+author: "Dave_Halvorsen"
+date: "January 4, 2019"
+output: html_document
+---
+
+```{r}
+setwd("/media/david/Linux/ALT_Introns_Exons_and_Promoters/Telomere_Math_Models")
+library(msa)
+library(seqinr)
+G_overhang_sequence <- "GGTTAG"
+C_overhang_sequence <- "CCAATC"
+reverse_complement_C_overhang_sequence <- "CTAACC"
+# 22*6 = 132 (min single stranded overhang is 130)
+# assuming 10 kbp telomere lengths, so 1666 * 6 9996 is for C strand
+# then 1666+22 is for G strand
+full_G_overhang_sequence <- paste(replicate(1688, G_overhang_sequence), collapse = "")
+full_C_overhang_sequence <- paste(replicate(1666, reverse_complement_C_overhang_sequence), collapse = "")
+write.fasta(sequences = full_G_overhang_sequence, names = "full_G_overhang_sequence", file.out = "full_G_overhang_sequence.fasta", open = "w", nbchar = 70, as.string = FALSE)
+write.fasta(sequences = full_C_overhang_sequence, names = "full_C_overhang_sequence", file.out = "full_C_overhang_sequence.fasta", open = "w", nbchar = 70, as.string = FALSE)
+```

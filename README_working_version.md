@@ -155,7 +155,7 @@ Telomerase seems to preferentially add onto the shortest telomeres
 Harley 2008 
 
 Cristofari 2006 Telomere length homeostasis requires that telomerase levels are limiting
-telomerase overexpression elongated rate up to 0.8kb/PD LENGTH INDEPENDENT
+
 
 #### There is G and C Strand
 
