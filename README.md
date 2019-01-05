@@ -148,19 +148,25 @@ abline(h=3000, col="black", lwd=3)
 
 ![Telomere_Shortening_Bar_Graph](/Assets/Telomere_Shortening_Bar_Graph.jpg "Telomere_Shortening_Bar_Graph")
 
+# Telomere Maintenance Mechanism (TMM) Selection
+The selection of TMM seems to mainly depend upon telomerase chromatin compaction and mutations in ATRX & p53 (Gocha 2013). 
+ 
+![ALT_TEL_Permissive_Mutations](/Assets/ALT_TEL_Permissive_Mutations.jpg "ALT_TEL_Permissive_Mutations")
+
+(Gocha 2013)
+
 # Telomerase Extends Telomeres
+Telomerase adds 5'-GGTTAG-3' (Harley 2008). Telomerase extends the shortest telomeres first (Harley 2008, Cristofari 2006). The G-rich strand is 5'-GGTTAG-3' and the C-rich strand is 3'-CCAATC-5'. Telomerase adds 5'-GGTTAG-3' (Harley 2008). The telomerase enzyme TERT uses the telomerase RNA 3'-CAAUCCCAAUC-5' as a template for the extension (Gavory 2002). There is a G-rich single stranded telomeric overhang of 130-210 nucleotides (Cesare 2010). telomerase, which is a reverse transcriptase that adds repetitive telomeric DNA (TTAGGG)n to the ends of the chromosomes (Allsopp 2001). 
 
 #### Model of Different Telomerase Levels
-Telomerase extends the shortest telomeres first (Harley 2008, Cristofari 2006). Telomerase overexpression might have an upper limit of 0.8 kb/division ... I'm not certain, but that was reported in Cristofari 2006. I might want to create a future update that limits to 800 bases/division just to keep cellular resources in mind. I don't know how model the telomerase activity in Python with a great deal of biological accuracy ... 
+Telomerase overexpression might have an upper limit of 0.8 kb/division ... I'm not certain, but that was reported in Cristofari 2006. I might want to create a future update that limits to 800 bases/division just to keep cellular resources in mind. I don't know how model the telomerase activity in Python with a great deal of biological accuracy ... 
 
 1. How much RNA template is available?
 2. How long will a telomerase enzyme be active?
 3. How do you model 3-D interactions?
 etc.,
 
-Telomerase adds 5'-GGTTAG-3' (Harley 2008), so I've decided to simplify the telomerase model to the number of times that telomerase can add 6bp of telomere to the chromosome end. Yes, it's a spherical cow kind of model, but what could I do better? Seriously, message me if you've got an idea, cause I'll try it out :) The telomere shortening model from above shortens 50 bp/ telomere for the 92 telomeres, so that's 4600 bp that is lost per division. 4600/6 = 766.6, so 6*676 bp being added per cell division would be cellular immortality. Anything lower-ish will eventually senesce. 
-
-This code is mostly the same as the last bit of telomere shortening code. I won't waste space witht he whole code again (see the Telomere_Math_Models folder). All I did was nest this while loop inside the first while loop (the one that shortens the telomeres). 
+so I've decided to simplify the telomerase model to the number of times that telomerase can add 6bp of telomere to the chromosome end. Yes, it's a spherical cow kind of model, but what could I do better? Seriously, message me if you've got an idea, cause I'll try it out :) The telomere shortening model from above shortens 50 bp/ telomere for the 92 telomeres, so that's 4600 bp that is lost per division. 4600/6 = 766.6, so 6*676 bp being added per cell division would be cellular immortality. Anything lower-ish will eventually senesce.  This code is mostly the same as the last bit of telomere shortening code. I won't waste space witht he whole code again (see the Telomere_Math_Models folder). All I did was nest this while loop inside the first while loop (the one that shortens the telomeres). 
 
 ```python
     telomerase_bp_added_per_division = 0
