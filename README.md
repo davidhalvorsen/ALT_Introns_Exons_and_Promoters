@@ -1,6 +1,3 @@
-
-This is an exploration of the Alternative Lengthening of Telomeres literature in H. sapiens, C. elegans, and K. lactis.
-
 # Telomeres Shorten with Age
 Human telomeres are estimated to be 5,000 - 15,000 base pairs at birth (Sanders 2013). The end replication problem shortens telomeres by approximately 50 bp with each round of cell division (Proctor 2002). 
 
@@ -159,7 +156,7 @@ abline(h=5000, col="red", lwd=3)
 abline(h=3000, col="black", lwd=3)
 ```
 
-![Telomere_Shortening_Bar_Graph.png](/Assets/Telomere_Shortening_Bar_Graph.png "Telomere_Shortening_Bar_Graph.png")
+![Telomere_Shortening_Bar_Graph](/Assets/Telomere_Shortening_Bar_Graph.jpg "Telomere_Shortening_Bar_Graph")
 
 
 
