@@ -216,8 +216,6 @@ Remember the wild range of telomere lengths from before? I made a new bar graph 
 
 NOTE: THE RANGE OF TELOMERE LENGTHS ISN'T NECESSARILY WHAT I HAVE DEPICTED HERE. I NEED TO TAKE SUDA 2002 INTO ACCOUNT IN A FUTURE UPDATE.
 
-
-
 #### Modeling Single Stranded G-rich Tail
 
 #### Model of Inhibiting Telomerase 
