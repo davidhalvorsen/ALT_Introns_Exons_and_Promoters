@@ -1,3 +1,6 @@
+
+This is an exploration of the Alternative Lengthening of Telomeres literature in H. sapiens, C. elegans, and K. lactis.
+
 # Telomeres Shorten with Age
 Human telomeres are estimated to be 5,000 - 15,000 base pairs at birth (Sanders 2013). The end replication problem shortens telomeres by approximately 50 bp with each round of cell division (Proctor 2002). 
 
@@ -15,6 +18,19 @@ while current_length > 0:
     current_length = current_length - 50
     current_division_number += 1
 print "The telomere is gone!"
+```
+
+Here are the last couple of lines of output:
+
+```sh
+Telomere Length is 350 bp after 294 divisions.
+Telomere Length is 300 bp after 295 divisions.
+Telomere Length is 250 bp after 296 divisions.
+Telomere Length is 200 bp after 297 divisions.
+Telomere Length is 150 bp after 298 divisions.
+Telomere Length is 100 bp after 299 divisions.
+Telomere Length is 50 bp after 300 divisions.
+The telomere is gone!
 ```
 
 #### Simple 1 Telomere Model & Damage Checkpoint
@@ -43,8 +59,34 @@ while current_length > 0:
 print "The telomere is gone!"
 ```
 
+Here are the last couple of lines of output:
+
+```sh
+Genomic instability is causing new mutations at 200 bp after 297 divisions.
+Death is inevitable, UNLESS telomere length is stabilized!
+Genomic instability is causing new mutations at 150 bp after 298 divisions.
+Death is inevitable, UNLESS telomere length is stabilized!
+Genomic instability is causing new mutations at 100 bp after 299 divisions.
+Death is inevitable, UNLESS telomere length is stabilized!
+Genomic instability is causing new mutations at 50 bp after 300 divisions.
+Death is inevitable, UNLESS telomere length is stabilized!
+The telomere is gone!
+```
+
 #### 92 Telomere Shortening Model
 There are 92 telomeres / human cell. That's cause there are 23 chromosomes X 2 (paired) X 2 telomeres/chrosome = 92. A DNA damage checkpoint will get triggered by the shortest telomere (Harley 2008). So a better mathematical model would take into account the distribution of telomere lengths and each individual telomere's shortening.   
+
+
+
+this will give range of chromosome lengths FACS
+GM130B, a spontaneously immortalized lymphoblast cell line originating from a normal male, was obtained from the NIGMS Human Genetic Cell Repository (Camden, NJ).
+search string of 'GM130B lymphoblast "telomerase"' is problematic cause GM130 antibody ... probably telomerase cause all? blood cell lines => telomerase
+https://www.abcam.com/gm130-antibody-ep892y-cis-golgi-marker-ab52649.html
+Anti-GM130 antibody [EP892Y] - cis-Golgi Marker (ab52649)
+
+Suda 2002 Interchromosomal Telomere Length Variation.pdf
+
+
 
 ```python
 #!/usr/bin/env python
@@ -85,6 +127,41 @@ while telomeres_longer_than_3000 == True:
     current_list_of_telomere_lengths = [telomere-50 for telomere in current_list_of_telomere_lengths]
     current_division_number += 1
 ```
+
+Here are the last couple of lines of output:
+
+```sh
+It is division # 44
+This is the current list of telomere lengths: 
+[9767, 10391, 3833, 4927, 8548, 3772, 8590, 6477, 12382, 6371, 11163, 8084, 9051, 6639, 5095, 3255, 9457, 12712, 9600, 4238, 5625, 11407, 12178, 8371, 9155, 2987, 8131, 8252, 4487, 10558, 10815, 5485, 3111, 8113, 8712, 7742, 11029, 8390, 5037, 5735, 9947, 5511, 10571, 11775, 5692, 12405, 3322, 4462, 6719, 11184, 8716, 8806, 11079, 8928, 7915, 10267, 6327, 3418, 6933, 6367, 3025, 10936, 9219, 12174, 3180, 11997, 9131, 7859, 7225, 8068, 10717, 12644, 12291, 3080, 12679, 7654, 3982, 7852, 5535, 10338, 11876, 11217, 5231, 9777, 3649, 6365, 6236, 7214, 7799, 8292, 3725, 7978]
+Telomere number 3 is only 3833 bp long.
+p53-mediated senescence would be triggered, BUT p53 is mutated!
+Telomere number 4 is only 4927 bp long.
+p53-mediated senescence would be triggered, BUT p53 is mutated!
+Telomere number 6 is only 3772 bp long.
+p53-mediated senescence would be triggered, BUT p53 is mutated!
+Telomere number 16 is only 3255 bp long.
+p53-mediated senescence would be triggered, BUT p53 is mutated!
+Telomere number 20 is only 4238 bp long.
+p53-mediated senescence would be triggered, BUT p53 is mutated!
+Telomere number 26 is only 2987 bp long.
+There is massive genomic instability and cell death!
+```
+
+It's hard to picture that list of telomere lengths, so I've made a barplot in R. Note that the red line is for the 5 kb p53-mediated senescence and that the black line is the 3 kbp cell crisis point (Harley 2008).
+
+```r
+telomere_lengths <- list(5583, 12162, 6389, 9970, 10351, 7970, 10257, 10570, 11226, 10003, 12418, 5145, 9841, 8593, 3683, 9251, 7884, 5070, 9813, 5316, 6170, 5067, 6420, 10141, 3465, 6754, 11450, 5883, 11551, 7127, 7170, 11200, 7788, 7079, 5492, 11992, 8606, 11573, 4600, 6108, 9872, 9659, 7811, 8597, 6907, 3161, 5425, 7053, 5638, 5540, 12154, 7962, 11386, 5722, 6675, 11306, 2967, 11208, 10478, 8560, 12603, 7522, 10607, 4044, 6816, 4172, 5127, 8953, 7438, 9860, 11952, 4076, 11505, 8247, 9124, 6027, 12625, 3031, 8991, 4777, 5177, 9458, 5578, 7392, 6019, 4637, 4912, 4458, 11358, 5594, 12343, 3874)
+telomere_numbers <- 1:92
+typeof(telomere_lengths[1])
+test <- barplot(as.numeric(telomere_lengths), main="Telomere Lengths", xlab="Telomere Number", ylab="Telomere Length (bp)", ylim = c(0,15000))
+abline(h=5000, col="red", lwd=3)
+abline(h=3000, col="black", lwd=3)
+```
+
+![Telomere_Shortening_Bar_Graph.png](/Assets/Telomere_Shortening_Bar_Graph.png "Telomere_Shortening_Bar_Graph.png")
+
+
 
 # Telomere Maintenance Mechanisms
 When DNA is getting copied, small end pieces aren't able to be fully copied. This is known as the End Replication Problem and is a result of Okazaki fragments incompletely covering the end of the chromosome. This is an issue for cell types that need to divide a lot, like Hematopoietic stem cells (HSC). HSCs have plenty of division to do so they can keep up with all the differentiation to make blood cells. This is why they express telomerase, which is a reverse transcriptase that adds repetitive telomeric DNA (TTAGGG)n to the ends of the chromosomes (Allsopp 2001). Did you notice that I'm citing a paper from the Weissman lab? ;)  
