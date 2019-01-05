@@ -1,6 +1,17 @@
 # Telomeres Shorten with Age
 Human telomeres are estimated to be 5,000 - 15,000 base pairs at birth (Sanders 2013). The end replication problem shortens telomeres by approximately 50 bp with each round of cell division (Proctor 2002). 
 
+ADD
+telomere reduces
+48 bp every cell divisions (23)
+Hastie, N. D., Dempster, M., Dunlop, M. G., Thompson, A. M.,
+Green, D. K., and Allshire, R. C. (1990) Telomere reduction in
+human colorectal carcinoma and with aging. Nature 346, 866 –
+868.
+ADD TELOMERE SHORTENING
+
+ADD SHAY 2016 FIGURE 1 WITH ALT UPDATES
+
 #### Simple 1 Telomere Shortening Model
 Here's a simple mathematical model for one telomere:
 
@@ -32,6 +43,24 @@ The telomere is gone!
 
 #### Simple 1 Telomere Model & Damage Checkpoint
 The situation is more complicated than that model. A DNA damage checkpoint will be triggered aroudn 5k bp and there will be massive genomic instability and cell death at around 3k bp (Harley 2008). Here's that slightly more complicated model:
+
+ADD DATA ON ESCAPING CELL CYCLE CHECKPOINTS HERE
+In human cells,
+the bypass or escape from senescence can be experimentally
+demonstrated by abrogating important cell-cycle checkpoint
+genes [such as TP53 (p53), CDKN1A (p21), CDKN2A (p16 INK4a ),
+and RB1 (pRb)], leading to increased numbers of cell divisions
+of potentially initiated premalignant cells ( 31–34 )
+Shay JW , Wright WE . Historical claims and current interpretations
+of replicative aging . Nat Biotech 2002 ; 20 : 682 – 8 .
+32. Wright WE , Shay JW . The two-stage mechanism controlling cellular
+senescence and immortalization . Exp Gerontol 1992 ; 27 ; 383 – 9 .
+33. Shay JW , Wright WE , Werbin H . Defi ning the molecular mechanism of
+human cell immortalization . Biochim Biophys Acta . 1991 ; 1072 : 1 – 7 .
+34. Harley CB. Telomere los
+ADD DATA ON ESCAPING CELL CYCLE CHECKPOINTS HERE
+
+ADD SHAY 2016 FIGURE 3 ABOUT ESCAPING SENSESCNECE CHECKPOINTS HERE
 
 ```python
 #!/usr/bin/env python
@@ -75,6 +104,37 @@ There are 92 telomeres / human cell. That's cause there are 23 chromosomes X 2 (
 
 GM130B is a spontaneously immortalized lymphoblast line from a male human. It's probably TEL+ because it's of a blood stem cell lineage (I explain this thinking in a later section), but I wasn't able to answer that conclusively. The search phrase of 'GM130B lymphoblast "telomerase"' is problematic cause there is an antibody called GM130 antibody called gm130 https://www.abcam.com/gm130-antibody-ep892y-cis-golgi-marker-ab52649.html. I also tried 'GM130B lymphoblast "telomerase" -antibody', BUT there's a Rab1b and Rab1-binding protein called GM130. So I tried 'GM130B lymphoblast "telomerase" -antibody -golgi' and that didn't have any useful results. 
 
+TAKE THESE OTHER TELOMERIC LENGTH RANGES INTO ACCOUNT
+The lengths of (TTAGGG)n tracts have been shown to
+vary from telomere to telomere within individual cells
+(Lansdorp et al., 1996; Zijlmans et al., 1997; Graakjaer et al.,
+2004) and between alleles at the same telomere (Baird et al.,
+2003; der-Sarkissian et al., 2004).
+Lansdorp PM, Verwoerd NP, van de Rijke FM,
+Dragowska V, Little MT, et al: Heterogeneity in
+telomere length of human chromosomes. Hum
+Mol Genet 5: 685–691 (1996)
+Zijlmans JM, Martens UM, Poon SS, Raap AK, Tan-
+ke HJ, et al: Telomeres in the mouse have large
+inter-chromosomal variations in the number of
+T2AG3 repeats. Proc Natl Acad Sci USA 94:
+7423–7428 (1997)
+Graakjaer J, Pascoe L, Der-Sarkissian H, Thomas G,
+Kolvraa S, et al: The relative lengths of individ-
+ual telomeres are defined in the zygote and
+strictly maintained during life. Aging Cell 3:
+97–102 (2004).
+Baird DM, Rowson J, Wynford-Thomas D, Kipling
+D: Extensive allelic variation and ultrashort
+telomeres in senescent human cells. Nat Genet
+33: 203–207 (2003).
+Der-Sarkissian H, Bacchetti S, Cazes L, Londono-
+Vallejo JA: The shortest telomeres drive karyo-
+type evolution in transformed cells. Oncogene
+23: 1221–1228 (2004).
+
+TAKE THESE OTHER TELOMERIC LENGTH RANGES INTO ACCOUNT
+
 ```python
 #!/usr/bin/env python
 import random
@@ -114,6 +174,19 @@ while telomeres_longer_than_3000 == True:
     current_list_of_telomere_lengths = [telomere-50 for telomere in current_list_of_telomere_lengths]
     current_division_number += 1
 ```
+
+THIS DISAGREES WITH Given the size of the telomere loss at each replication
+and the average telomere length at conception, telomer-
+ase negative cells have the capacity for about 100 cell
+divisions before telomeres get critically short (Harley,
+1995)
+THIS DISAGREES WITH HARLEY 1995 ... IS 5000 TOO SHORT OF STARTING POINT?
+TALK ABOUT DAGG 2017 Start-
+ing from a single cell, 40 cell divisions are sufficient to generate
+2 40 cells, with a mass of 1 kg. Many types of normal cells are
+capable of more than 40 cell divisions, which raises the question
+why immortalization is required for oncogenesis.
+TALK ABOUT DAGG 2017
 
 Here are the last couple of lines of output:
 
@@ -157,6 +230,50 @@ The selection of TMM seems to mainly depend upon telomerase chromatin compaction
 
 # Telomerase Extends Telomeres
 Telomerase adds 5'-GGTTAG-3' (Harley 2008). Telomerase extends the shortest telomeres first (Harley 2008, Cristofari 2006). The G-rich strand is 5'-GGTTAG-3' and the C-rich strand is 3'-CCAATC-5'. Telomerase adds 5'-GGTTAG-3' (Harley 2008). The telomerase enzyme TERT uses the telomerase RNA 3'-CAAUCCCAAUC-5' as a template for the extension (Gavory 2002). There is a G-rich single stranded telomeric overhang of 130-210 nucleotides (Cesare 2010). telomerase, which is a reverse transcriptase that adds repetitive telomeric DNA (TTAGGG)n to the ends of the chromosomes (Allsopp 2001). 
+
+ADD SECTION ABOUT TELOMERASE MUTATIONS!
+Somatic mutations in the
+proximal promoter of the human telomerase reverse tran-
+scriptase gene (TERT ) are now considered the most common
+noncoding mutation in cancer.
+Bojesen SE , Pooley KA , Johnatty SE , Beesley J , Michailidou K , Tyrer
+JP , et al. Multiple independent variants at the TERT locus are asso-
+ciated with telomere length and risks of breast and ovarian cancer .
+Nat Genet 2013 ; 45 ; 371 – 384 .
+38. Heidenreich B , Rachakonda PS , Hemminki K , Kumar R . TERT
+promoter mutations in cancer development . Current Opin Genet
+Develop 2014 ; 24 : 30 – 7 .
+39. Huang FW , Hodis E , Xu MJ , Kryukov GV , Chin L , Garraway LA .
+Highly recurrent TERT promoter mutations in human melanoma .
+Science 2013 ; 339 : 957 – 9 .
+40. Chiba K , Johnson JZ , Vogan JM , Wagner T , Boyle JM , Hockemeyer
+D . Cancer-associated TERT promoter mutations abrogate telomer-
+ase silencing . eLife 2015 ; 4e07918 .
+41. Killela PJ , Reitman ZJ , Jiao Y , Bettegowda C , Agrawal N , Diaz LA Jr ,
+et al. TERT promoter mutations occur frequently in gliomas and a
+subset of tumors derived from cells with low rates of self-renewal .
+Proc Natl Acad Sci U S A 2013 ; 110 : 6021 – 6 .
+42. Vinagre J , Almeida A , Pópulo H , Batista R , Lyra J , Pinto V , et al.
+Frequency of TERT promoter mutations in human cancers . Nature
+Comm 2013 ; 4 : 2185 .
+43. Horn S , Figl A , Rachakonda PS , Fischer C , Sucker A , Gast A , et al.
+TERT promoter mutations in familial and sporadic melanoma .
+Science 2013 ; 339 : 959 – 61 .
+44. Stern JL , Theodorescu D , Vogelstein B , Papadopoulos N , Cech
+TR . Mutation of the TERT promoter switch to active chromatin,
+and monoallelic TERT expression in multiple cancers. Genes Dev
+2015 ; 29 : 1 – 6
+or alterations in
+TERT splicing ( 52 )
+Wong MS , Wright WE , Shay JW . Alternative splicing regulation of
+telomerase: a new paradigm? Trends Genet 2015 ; 30 ; 10 : 430 – 8 .
+SPECIFICLALY ABOUT REF 44 monoallelic TERT promoter mutations
+must provide a selective advantage in specifi c tumor types, such
+as glioblastomas, urothelial carcinomas, and melanomas, possi-
+bly by retaining an active chromatin state ( 44 )
+ADD SECTION ABOUT TELOMEASE MUTATIONS!
+
+
 
 #### Model of Different Telomerase Levels
 Telomerase overexpression might have an upper limit of 0.8 kb/division ... I'm not certain, but that was reported in Cristofari 2006. I might want to create a future update that limits to 800 bases/division just to keep cellular resources in mind. I don't know how model the telomerase activity in Python with a great deal of biological accuracy ... 
@@ -206,6 +323,10 @@ This is the current list of telomere lengths:
 [10252, 10250, 10248, 10252, 10251, 10250, 10252, 10248, 10249, 10250, 10249, 10251, 10249, 10250, 10249, 10252, 10248, 10251, 10250, 10248, 10250, 10248, 10251, 10247, 10248, 10252, 10247, 10252, 10250, 10247, 10247, 10249, 10252, 10248, 10247, 10252, 10250, 10251, 10251, 10248, 10246, 10248, 10251, 10246, 10250, 10249, 10247, 10247, 10246, 10251, 10249, 10250, 10251, 10246, 10248, 10247, 10251, 10248, 10249, 10250, 10246, 10248, 10246, 10248, 10250, 10248, 10251, 10249, 10251, 10246, 10250, 10251, 10247, 10250, 10247, 10247, 10246, 10251, 10251, 10251, 10250, 10248, 10246, 10249, 10249, 10249, 10246, 10246, 10250, 10246, 10250, 10249]
 ```
 
+ADD SHAY 2016 FIGURE 2 ABOUT TMM IMMORTALIATIONS
+
+
+
 Here's half of that number of telomerase hexamers with telomerase_bp_added_per_division = 6*383.
 
 ```sh
@@ -220,7 +341,7 @@ Remember the wild range of telomere lengths from before? I made a new bar graph 
 
 ![Equal_Telomere_Shortening_Bar_Graph.jpg](/Assets/Equal_Telomere_Shortening_Bar_Graph.jpg "Equal_Telomere_Shortening_Bar_Graph.jpg")
 
-NOTE: THE RANGE OF TELOMERE LENGTHS ISN'T NECESSARILY WHAT I HAVE DEPICTED HERE. I NEED TO TAKE SUDA 2002 INTO ACCOUNT IN A FUTURE UPDATE.
+NOTE: THE RANGE OF TELOMERE LENGTHS ISN'T NECESSARILY WHAT I HAVE DEPICTED HERE. I NEED TO TAKE SUDA 2002 INTO ACCOUNT IN A FUTURE UPDATE. ALSO Graakjaer 2003 The pattern of chromosome-specific variations in telomere length in humans is determined by inherited, telomere-near factors and is maintained throughout life FINDS THAT TELOMERASE DOES NOT CHANGE THE OVERALL LENGTH RANGE ... I SHOULD UPDATE THE MODEL TO ACT ON THE SHORTEST TELOMERES ***RELATIVE*** TO THE OVERALL LENGTH ... LIKE NORMALZING THEM TO EACHOTHER OR SOMETHING ... MATH IS HARD, LOL. GRAAKJAER 2003 ALSO FOUND A CORRELATION BETWEEN CHROMOSOME LENGTH AND TELOMERE LENGTH
 
 #### Modeling the Single Stranded G-rich Tail
 Another thing that I left out of earlier models was the G-rich and C-rich strands. I've just been describing the telomeres as having a length. They have sequence too! The G-rich strand is 5'-GGTTAG-3' and the C-rich strand is 3'-CCAATC-5'. Telomerase adds 5'-GGTTAG-3' (Harley 2008). The telomerase enzyme TERT uses the telomerase RNA 3'-CAAUCCCAAUC-5' as a template for the extension (Gavory 2002). There is a G-rich single stranded telomeric overhang of 130-210 nucleotides (Cesare 2010).
@@ -254,6 +375,8 @@ Mefford 2002 The complex structure and dynamic evolution of human subtelomeres
 Suda 2002 Interchromosomal Telomere Length Variation
 Graakjaer 2003 The pattern of chromosome-specific variations in telomere length in humans is determined by inherited, telomere-near factors and is maintained throughout life
 
+TALK ABOUT POT1 ALLOW TELOMERASE FROM LEI 2005 FIG 7
+
 #### Model of Inhibiting Telomerase 
 When DNA is getting copied, small end pieces aren't able to be fully copied. This is known as the End Replication Problem and is a result of Okazaki fragments incompletely covering the end of the chromosome. This is an issue for cell types that need to divide a lot, like Hematopoietic stem cells (HSC). HSCs have plenty of division to do so they can keep up with all the differentiation to make blood cells. This is why they express telomerase, which is a reverse transcriptase that adds repetitive telomeric DNA (TTAGGG)n to the ends of the chromosomes (Allsopp 2001). Did you notice that I'm citing a paper from the Weissman lab? ;)  
  
@@ -281,6 +404,24 @@ This model is the same as the telomere shortening + telomerase model AND you can
 3) cancers with telomeres that are equilavent to stem cell telomeres (anti-telomerase therapy will exhaust the stem cell pools before the cancer)
 
 I bring up point 3 because one problem with telomerase inhibitors is that they have been reported to cause problems with blood stem cells (Hu 2017). This update only needed three lines of code. I added a varible for the division number for telomerase to stop at and an if condition that sets telomerase activity to 0 AFTER that division number has been reached. 
+
+ADD THESE TO ANTI-TELOMERASE STEM CELL ISSUES
+In addition, because some hematopoietic proliferative cells
+exert regulated telomerase activity, toxicities have been observed
+( 100–102 ), such as thrombocytopenia (e.g., low platelet counts).
+These toxicities require patients to go off the telomerase inhibi-
+tor, and very quickly the telomeres regain their length.
+Chiappori AA , Kolevska T , Spigel DR , Hager S , Rarick M , Gadgeel
+S , et al. A randomized phase II study of the telomerase inhibitor
+imetelstat as maintenance therapy for advanced non-small-cell lung
+cancer . Annal Oncol 2015 ; 26 : 354 – 62 .
+101. Baerlocker GM , Leibundgut EO , Ottmann OG , Spitzer G , Odenike
+O , McDivitt MA , et al. Telomerase inhibitor imetelstat in patients
+with essential thrombocythemia . New Engl J Med 2015 ; 373 : 920 – 8 .
+102. Tefferi A , Lasho TL , Begna KH , Patnaik MM , Zblewski DL , Finke
+CM , et al. A pilot study of the telomerase inhibitor imetelstat for
+myelofi brosis . New Engl J Med 2015 ; 373 : 908 – 19 .
+ADD THESE TO ANTI-TELOMERASE STEM CELL ISSUES
 
 ```python
 telomerase_stopped_at_division_number = 30
@@ -456,6 +597,9 @@ Transcript B0280.10c.1 is 1140 nucleotides long and it codes for a 379 amino aci
 
 # ATRX Exon Deletion is Common in ALT
 This project can be found in the Human_ATRX_ALT folder. ATRX gene mutations are found in a range of cancers. 10-15% of cancers are estimated to use ALT. ALT involves homologous recombination-based telomere elongation. Inactivating mutations in either ATRX or DAXX are found in many cancers. Depletion of ATRX seems insufficient to trigger ALT, but it does seem to play a key role in the ALT pathway. The absence of ATRX might lead to the failure of stalled replication forks to get resolved. The required fork restart would require homologus recombination and could jumpstart the ALT pathway (Clynes 2013). ALT involves a template-based lengthening of telomeres with homologous recombination. The genetic and epigenetic changes are not full understood. Lovejoy 2012 reported that ATRX gene mutations are a common feature of ALT. Specifically 19/22 ALT+ cell lines had an issue with the expression of ATRX or DAXX (Lovejoy 2012). See the Lovejoy 2012 supplementary information for the Excel table of Exon deletions in ALT cell lines. 
+
+ADD REN 2018 FIGURE 1 OF EXON DELETIONS REPORTED BY THE LITERATURE
+
 ![ATRX_Prevents_Fork_Collapse](/Assets/ATRX_Prevents_Fork_Collapse.jpg "ATRX_Prevents_Fork_Collapse")
 
 (Clynes 2013)
@@ -708,6 +852,5 @@ showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
 * Gavory 2002 Minimum length requirement of the alignment domain of human telomerase RNA to sustain catalytic activity in vitro
 * Murnane 1994 Telomere dynamics in an immortal human cell line
 * Telomere elongation in immortal human cells without detectable telomerase activity
-
 
 
