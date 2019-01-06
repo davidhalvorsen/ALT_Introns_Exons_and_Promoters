@@ -315,7 +315,11 @@ Telomere number 13 is only 2991 bp long.
 There is massive genomic instability and cell death!
 ```
 
-This is what happend when I left it alone for a little while with a telomerase_bp_added_per_division = 6*767. It got up to division number 18,601! That's what people mean when they talk about cancer "immortality."
+This is what happend when I left it alone for a little while with a telomerase_bp_added_per_division = 6*767. It got up to division number 18,601! That's what people mean when they talk about cancer "immortality." 
+
+ADD IMMORTALIZATION NOTE
+Henson 2010 Assaying and investigating Alterantive Lengtheing of telomeras activity ijn human cells and cancers
+a useful confirmatory test is to demonstrate that the cells being studied are in fact immortalized. This is usually done by determining whether the cells are able to grow in culture for >100 PD.
 
 ```sh
 It is division # 18601
@@ -494,8 +498,99 @@ I think there are still more details that I should take into account for this id
 # I HAVEN'T MADE THIS YET.
 ```
 
+ADD ALT TELOMRE LENGTH MODEL INOFRMATION
+(TRF data) ALT telomere length modal length approximately twice that in comparable telomerase[+] or normal cells [3], [26].
+3 is Bryan 1995. ALT up to 50 kb (peaks at 10 and 50 kb). Telomerase-negative cell lines do not contain inhibitor(s) of telomerase or Taq polymerase.  IIICF/c TRF pattern was not detected until around 40 PD after immortalization.  
+T.M. Bryan, A. Englezou, J. Gupta, S. Bacchetti, R.R. Reddel
+Telomere elongation in immortal human cells without detectable telomerase activity
+EMBO J., 14 (1995), pp. 4240-4248
+L.S. Gollahon, E. Kraus, T.A. Wu, S.O. Yim, L.C. Strong, J.W. Shay, M.A. Tainsky
+Telomerase activity during spontaneous immortalization of Li-Fraumeni syndrome skin fibroblasts
+Oncogene, 17 (1998), pp. 709-717
+
+The telomere length heterogeneity can also be visualized in metaphase spreads by telomere fluorescence in situ hybridization (FISH) [14].
+K. Perrem, L.M. Colgin, A.A. Neumann, T.R. Yeager, R.R. Reddel
+Coexistence of alternative lengthening of telomeres and telomerase in hTERT-transfected GM847 cells
+Mol. Cell. Biol., 21 (2001), pp. 3862-3875  
+
+Telomere lengths in ALT cells are not normally distributed, in contrast to telomerase[+] cells, most of which regulate their telomere lengths about a mean of 5–10 kb [27], [28].
+27 is Henson 2002. normal telomeres 15kb in human germline. somatic cells in vitro TRF length declines rate 40-200 bp/cell division down to 5-8 kb at senesnce. . most tleloemrase positive lines TRF lengths are erelatively homogenous w/ mean length usually less than 10 kb. ALT mean is around 20kb and TRF lengths range from less than 3kb to over 50 kb. 
+J.D. Henson, A.A. Neumann, T.R. Yeager, R.R. Reddel
+Alternative lengthening of telomeres in mammalian cells
+Oncogene, 21 (2002), pp. 598-610
+28 is Jeyapalan 2008. TRF telomrees are 0.5 kb to >40 kb.
+Jeyapalan 2008 Evidence for alternative lengthening of telomeres in liposarcomas in the absence of ALT‐associated PML bodies
+
+single telomeres in ALT[+] cells revealed sporadic, unsynchronized increases and decreases in telomere lengths of a variable amount (that are sometimes very large – up to ∼20 kb) on a background of gradual erosion (∼50 bp/PD) [29], which appear to be responsible for the broad distribution of ALT telomere lengths [28].
+29 is Murnane 1994
+J.P. Murnane, L. Sabatier, B.A. Marder, W.F. Morgan
+Telomere dynamics in an immortal human cell line
+EMBO J., 13 (1994), pp. 4953-4962
+28 is J.N. Jeyapalan, A. Mendez-Bermudez, N. Zaffaroni, Y.E. Dubrova, N.J. Royle
+Evidence for alternative lengthening of telomeres in liposarcomas in the absence of ALT-associated PML bodies
+Int. J. Cancer, 122 (2008), pp. 2414-2421
+
+his pattern is established within one PD (equivalent to approximately 17 cell generations, which are required for one clone to overgrow a culture that is in crisis) of ALT being activated during immortalization in vitro [30].
+T.R. Yeager, A.A. Neumann, A. Englezou, L.I. Huschtscha, J.R. Noble, R.R. Reddel
+Telomerase-negative immortalized human cells contain a novel type of promyelocytic leukemia (PML) body
+Cancer Res., 59 (1999), pp. 4175-4179
+
+The long heterogeneous telomere length pattern remains the best-established marker for ALT in human cells, including tumors archived under conditions where it is possible to extract high-quality genomic DNA [5], [31]. 
+5 is T.M. Bryan, A. Englezou, L. Dalla-Pozza, M.A. Dunham, R.R. Reddel
+Evidence for an alternative mechanism for maintaining telomere length in human tumors and tumor-derived cell lines
+Nat. Med., 3 (1997), pp. 1271-1274
+31 is J.D. Henson, J.A. Hannay, S.W. McCarthy, J.A. Royds, T.R. Yeager, R.A. Robinson, S.B. Wharton, D.A. Jellinek, S.M. Arbuckle, J. Yoo, B.G. Robinson, D.L. Learoyd, P.D. Stalley, S.F. Bonar, D. Yu, R.E. Pollock, R.R. Reddel
+A robust assay for alternative lengthening of telomeres (ALT) in tumors demonstrates the significance of ALT in sarcomas and astrocytomas
+Clin. Cancer Res., 11 (2005), pp. 217-225
+
+Long and/or heterogeneous telomeres are seen in telomerase[+] cell lines when expression of hTR or hTERT at supra-physiological levels challenges the telomere length regulatory mechanism with excessive telomere lengthening [32], [33].
+Y. Cao, L.I. Huschtscha, A.S. Nouwens, H.A. Pickett, A.A. Neumann, A.C. Chang, C.D. Toouli, T.M. Bryan, R.R. Reddel
+Amplification of telomerase reverse transcriptase gene in human mammary epithelial cells with limiting telomerase RNA expression levels
+Cancer Res., 68 (2008), pp. 3115-3123
+H.A. Pickett, A.J. Cesare, R.L. Johnstone, A.A. Neumann, R.R. Reddel
+Control of telomere length by a trimming mechanism that involves generation of t-circles
+EMBO J., 28 (2009), pp. 799-809
+
+Conversely, it may not be necessary for cells using the ALT mechanism to have long telomeres [34].
+M.A. Cerone, C. Autexier, J.A. Londono-Vallejo, S. Bacchetti
+A human cell line that maintains telomeres in the absence of telomerase and of key markers of ALT
+Oncogene, 24 (2005), pp. 7893-78901
+
+Up to 30% of chromosome ends in ALT cells have been reported as having undetectable telomeres [51] and even some easily detectable ALT telomeres may be “functionally short” due to an increased number of variant telomeric repeats [28], [66], [77], [93].
+51 is T. Jegou, I. Chung, G. Heuvelman, M. Wachsmuth, S.M. Gorisch, K.M. Greulich-Bode, P. Boukamp, P. Lichter, K. Rippe
+Dynamics of telomeres and PML nuclear bodies in a telomerase negative human cell line
+Mol. Biol. Cell, 20 (2009), pp. 2070-2082
+28 is J.N. Jeyapalan, A. Mendez-Bermudez, N. Zaffaroni, Y.E. Dubrova, N.J. Royle
+Evidence for alternative lengthening of telomeres in liposarcomas in the absence of ALT-associated PML bodies
+Int. J. Cancer, 122 (2008), pp. 2414-2421
+66 is J.D. Henson, Y. Cao, L.I. Huschtscha, A.C. Chang, A.Y. Au, H.A. Pickett, R.R. Reddel
+DNA C-circles are specific and quantifable markers of alternative-lengthening-of-telomeres activity
+Nat. Biotechnol., 27 (2009), pp. 1181-1185
+77 is 
+H. Varley, H.A. Pickett, J.L. Foxon, R.R. Reddel, N.J. Royle
+Molecular characterization of inter-telomere and intra-telomere mutations in human ALT cells
+Nat. Genet., 30 (2002), pp. 301-305
+J. Dejardin, R.E. Kingston
+Purification of proteins associated with specific genomic loci
+Cell, 136 (2009), pp. 175-186
+
+ADD TELOOMERE SHORTENING EXAMPLE
+hENSON 2010 Assaying and investigating Alternative Lengthening of Telomeres activity in human cells and cancers
+For example, in an ALT[+] fibroblast cell line in which the MRE11/RAD50/NBS1 (MRN) complex was sequestered following expression of high levels of SP100 protein, telomere length declined linearly (over several time-points) at a rate of approximately 120 base pairs (bp)/PD.
+
+a useful confirmatory test is to demonstrate that the cells being studied are in fact immortalized. This is usually done by determining whether the cells are able to grow in culture for >100 PD.
+
 #### ALT Telomeres Have C-rich Overhangs
 There is some degree of 5' C-rich overhang in ALT cells. 
+
+
+Min 2015 Alternative lengthening of telomeres can be maintained by preferential elongation of lagging strands
+Overhang
+length in SW39 ALT1 cells are variable from 40 nt to 400 nt,
+whereas parental SW39 cells have 65 nt to 140 nt overhang
+lengths consistent with previous reports (overhang length
+in telomerase positive cells: 60–150 nt)
+Min 2015 Alternative lengthening of telomeres can be maintained by preferential elongation of lagging strands
 
 ![C_overhang](/Assets/C_overhang.jpg "C_overhang")
 
@@ -822,6 +917,23 @@ msaPrettyPrint(Klactis_Xenopus_Human_STN1_Proteins_AA_alignment, output="pdf", s
 showLogo="none", askForOverwrite=FALSE, verbose=FALSE)
 ```
 ![Klactis_Xenopus_Human_STN1_Proteins_AA_alignment](/Assets/Klactis_Xenopus_Human_STN1_Proteins_AA_alignment.jpg "Klactis_Xenopus_Human_STN1_Proteins_AA_alignment")
+
+#### Mutant TP53 and ALT
+Chen Association of Mutant TP53 with Alternative Lengthenig of telomre sand favorable prognosis in glioma
+2006
+
+#### ALT cells have Increased TERRA
+each TERRA molecule comprises a chromosome-specific 5′ end followed by a tract of UUAGGG repeats, the length of which is proportional to telomere length (12)
+Episkopou 2014 Alternative Lengthening of Telomeres is characterized by reduced compaction of telomeric chromatin
+12 is
+Arnoult N, Van Beneden A, Decottignies A. Telomere length regulates TERRA levels through increased trimethylation of telomeric H3K9 and HP1α Nat. Struct. Mol. Biol. 2012;19:948–956. 
+
+
+#### Interesting Experimental Ideas
+IMR90 SV40 parental of SW39 TEL+ and SW26 ALT+ SW13 ALT+
+SW39 TEL+ was TERC KO went through crisis to become SW39 ALT+
+Min 2017
+ALT , TEL fusions some ALT some TEL ... what is the differential gene expression?
 
 # Citations
 * Cheng 2012 Caenorhabditis elegans POT-2 telomere protein represses a mode of alternative lengthening of telomeres with normal telomere lengths
