@@ -1,0 +1,239 @@
+---
+title: "Suda 2002 Telomere Lengths"
+author: "Dave_Halvorsen"
+date: "January 6, 2019"
+output: html_document
+---
+
+
+```{r}
+# according to Suda 2002 "The present study demonstrated that RTC values in
+# each chromosome were significantly correlated with
+# the chromosome size"
+# there should be a linear relationship between chromosome length and telomere length
+chromosome_lengths <- c(246, 202, 193, 184, 173, 160, 146, 125, 110, 103, 100, 93, 85, 81, 62, 67, 48, 52)
+telomere_lengths <- c(5681, 4987, 5018, 4589, 4302, 4127, 3922, 3708, 4045, 3624, 3460, 3109, 3077, 3007, 2750, 2913, 2735, 2806)
+length(chromosome_lengths)
+length(telomere_lengths)
+plot(chromosome_lengths, telomere_lengths)
+```
+
+```{r}
+# this is a linear regression of the variables
+lm(telomere_lengths ~ chromosome_lengths)
+```
+
+```{r}
+plot(chromosome_lengths, telomere_lengths)
+abline(1920.25, 14.93)
+```
+
+```{r}
+# AWESOME! The y = mx + b is y = 14.93x + 1920.25
+# let's check the math here
+# an x of 50 should 2750ish for y
+14.93*50 + 1920.25
+# an x of 250 should be 5500ish on the y
+14.93*250 + 1920.25
+```
+
+```{r}
+# I'm assuming that this relationship will hold true for chromosomes X + Y
+# AND that p/q is 1 in telomerase (CITATION NEEDED) and that it's fine
+# to think of chromsomes 1+2 having equal telomere lengths AND that same deal for 9-12
+# I need to calculate lengths for chromosome x and chromosome y
+# Morton 1991 Parameters of the human genome Table 1 has data I can play with
+# BUT, keep in mind that the chromosome Mb are slightly different from Suda 2002 2
+chromosome_X_length <- 14.93*164 + 1920.25
+chromosome_X_length
+chromosome_Y_length <- 14.93*59 + 1920.25
+chromosome_Y_length
+# telomere_lengths
+chromosome_1_length <- telomere_lengths[1]
+chromosome_2_length <- telomere_lengths[1]
+chromosome_9_length <- telomere_lengths[8]
+chromosome_10_length <- telomere_lengths[8]
+chromosome_11_length <-telomere_lengths[8]
+chromosome_12_length <- telomere_lengths[8]
+```
+
+```{r}
+# telomere_lengths is from Suda 2002. I wanna update it to have:
+# individual lengths for C1+2
+# individual lengths for C9-12
+# individual lengths for X & Y 
+# ^ REMEMBER that X and Y are on different pairs of chromosomes!!!
+# So, the diploid chromosome would be missing C2, C10, C11, C12, and X (OR Y)
+# that's 5 less than 23, so initial length should be 18
+length(telomere_lengths)
+telomere_lengths
+```
+
+```{r}
+chrom_1 <- chromosome_1_length
+chrom_2 <- chromosome_2_length
+chrom_3 <- telomere_lengths[2]
+chrom_4 <- telomere_lengths[3]
+chrom_5 <- telomere_lengths[4]
+chrom_6 <- telomere_lengths[5]
+chrom_7 <- telomere_lengths[6]
+chrom_8 <- telomere_lengths[7]
+chrom_9 <- chromosome_9_length
+chrom_10 <- chromosome_10_length
+chrom_11 <- chromosome_11_length
+chrom_12 <- chromosome_12_length
+chrom_13 <- telomere_lengths[9]
+chrom_14 <- telomere_lengths[10]
+chrom_15 <- telomere_lengths[11]
+chrom_16 <- telomere_lengths[12]
+chrom_17 <- telomere_lengths[13]
+chrom_18 <- telomere_lengths[14]
+chrom_19 <- telomere_lengths[15]
+chrom_20 <- telomere_lengths[16]
+chrom_21 <- telomere_lengths[17]
+chrom_22 <- telomere_lengths[18]
+chrom_X <- chromosome_X_length
+chrom_Y <- chromosome_Y_length
+```
+
+```{r}
+# this set has the X chromosome
+chromosome_pair_1_telomere_lengths <- c(chrom_1, chrom_2, chrom_3, chrom_4, chrom_5, chrom_6, chrom_7, chrom_8, chrom_9, chrom_10, chrom_11, chrom_12,chrom_13,chrom_14,chrom_15,chrom_16,chrom_17,chrom_18,chrom_19,chrom_20, chrom_21, chrom_22, chrom_X)
+# this set has the Y chromosome
+chromosome_pair_2_telomere_lengths <- c(chrom_1, chrom_2, chrom_3, chrom_4, chrom_5, chrom_6, chrom_7, chrom_8, chrom_9, chrom_10, chrom_11, chrom_12,chrom_13,chrom_14,chrom_15,chrom_16,chrom_17,chrom_18,chrom_19,chrom_20, chrom_21, chrom_22, chrom_Y)
+```
+
+```{r}
+chromosome_pair_1_names <- c((1:22), "X")
+chromosome_pair_2_names <- c((1:22), "Y")
+```
+
+```{r}
+
+barplot(chromosome_pair_1_telomere_lengths, names.arg=chromosome_pair_1_names)
+abline(h=5000, col="red", lwd=3)
+abline(h=3000, col="black", lwd=3)
+```
+
+
+
+
+```{r}
+# this has the y chromosome
+barplot(chromosome_pair_2_telomere_lengths, names.arg=chromosome_pair_2_names)
+```
+
+```{r}
+# in the simple case of telomerase it is fair to assume the p and q arms will have a ratio of 1
+telomerase_chromosome_lengths <- c(chrom_1, chrom_2, chrom_3, chrom_4, chrom_5, chrom_6, chrom_7, chrom_8, chrom_9, chrom_10, chrom_11, chrom_12,chrom_13,chrom_14,chrom_15,chrom_16,chrom_17,chrom_18,chrom_19,chrom_20, chrom_21, chrom_22, chrom_X, chrom_Y)
+telomerase_chromosome_names <- c((1:22), "X", "Y")
+barplot(telomerase_chromosome_lengths, names.arg=telomerase_chromosome_names, las=2)
+abline(h=5000, col="red", lwd=3)
+abline(h=3000, col="black", lwd=3)
+```
+
+```{r}
+# the length of one set of chromosomes should be 23
+one_set_of_chromosomes <- c((1:22), "X")
+length(one_set_of_chromosomes)
+# list of autosome pairs and sex chromosomes should be 46 long
+autosome_pairs_sex_chromosomes <- c("c1a1", "c2a1", "c3a1", "c4a1", "c5a1", "c6a1", "c7a1", "c8a1", "c9a1", "c10a1", "c11a1", "c12a1", "c13a1", "c14a1", "c15a1", "c16a1", "c17a1", "c18a1", "c19a1", "c20a1", "c21a1", "c22a1", "cX", "c1a2", "c2a2", "c3a2", "c4a2", "c5a2", "c6a2", "c7a2", "c8a2", "c9a2", "c102", "c11a2", "c12a2", "c13a2", "c142", "c15a2", "c16a2", "c172", "c18a2", "c19a2", "c20a2", "c21a2", "c22a2", "cY")
+length(autosome_pairs_sex_chromosomes)
+# list of autosome pairs and sex chromosomes AND both arms should be 92 long
+#autosome_pairs_sex_chromosomes_and_arms <- c("c1a1p", "c2a1p", "c3a1p", "c4a1p", "c5a1p", "c6a1p", "c7a1p", "c8a1p", "c9a1p", "c10a1p", "c11a1p", "c12a1p", "c13a1p", "c14a1p", "c15a1p", "c16a1p", "c17a1p", "c18a1p", "c19a1p", "c20a1p", "c21a1p", "c22a1p", "cXp", "c1a2p", "c2a2p", "c3a2p", "c4a2p", "c5a2p", "c6a2p", "c7a2p", "c8a2p", "c9a2p", "c102p", "c11a2p", "c12a2p", "c13a2p", "c142p", "c15a2p", "c16a2p", "c172p", "c18a2p", "c19a2p", "c20a2p", "c21a2p", "c22a2p", "cYp", "c1a1q", "c2a1q", "c3a1q", "c4a1q", "c5a1q", "c6a1q", "c7a1q", "c8a1q", "c9a1q", "c10a1q", "c11a1q", "c12a1q", "c13a1q", "c14a1q", "c15a1q", "c16a1q", "c17a1q", "c18a1q", "c19a1q", "c20a1q", "c21a1q", "c22a1q", "cXq", "c1a2q", "c2a2q", "c3a2q", "c4a2q", "c5a2q", "c6a2q", "c7a2q", "c8a2q", "c9a2q", "c102q", "c11a2q", "c12a2q", "c13a2q", "c142q", "c15a2q", "c16a2q", "c172q", "c18a2q", "c19a2q", "c20a2q", "c21a2q", "c22a2q", "cYq")
+
+# I want the order of chrom1a1p, chrom1a1q, chrom1a2p ... chromXp, chromXq, chrom1a2p, chrom1a2q ... chromYp, chromYp
+autosome_pairs_sex_chromosomes_and_arms <- c("c1a1p", "c1a1q","c2a1p","c2a1q","c3a1p","c3a1q","c4a1p","c4a1q","c5a1p","c5a1q","c6a1p","c6a1q","c7a1p","c7a1q","c8a1p","c8a1q","c9a1p","c9a1q","c10a1p","c10a1q","c11a1p","c11a1q","c12a1p","c12a1q","c13a1p","c13a1q","c14a1p","c14a1q","c15a1p","c15a1q","c16a1p","c16a1q","c17a1p","c17a1q","c18a1p","c18a1q","c19a1p","c19a1q","c20a1p","c20a1q","c21a1p","c21a1q","c22a1p","c22a1q","cXp","cXq","c1a2p","c1a2q","c2a2p","c2a2q","c3a2p","c3a2q","c4a2p","c4a2q","c5a2p","c5a2q","c6a2p","c6a2q","c7a2q", "c8a2p","c8a2q","c7a2p","c9a2q","c9a2p","c102q","c102p","c11a2q","c11a2p","c12a2p","c12a2q", "c13a2p","c13a2q", "c142p","c142q", "c15a2p", "c15a2q","c16a2p","c16a2q","c172p","c172q","c18a2p","c18a2q","c19a2p", "c19a2q","c20a2p","c20a2q", "c21a2p","c21a2q","c22a2p","c22a2q","cYp","cYq")
+length(autosome_pairs_sex_chromosomes_and_arms)
+```
+
+```{r}
+library(rlist)
+# Bryan 1995. ALT up to 50 kb (peaks at 10 and 50 kb)
+# Henson 2002 less than 3kb to over 50 kb
+# Murnane 1994 ALT cells sporadic +/- in telomere lengths up to 20 kb AND gradual erosion of 50 bp/ PD
+# Yeager 1999 ALT pattern took 17 generations to escape culture w/clone
+# LOTS OF CITATIONS FOR THIS up to 30% of ALT telomeres have undetectable telomeres MIGHT BE UNDETECTABLY SHORT CAUSE DIFF SEQUENCES
+# 28 is J.N. Jeyapalan, A. Mendez-Bermudez, N. Zaffaroni, Y.E. Dubrova, N.J. Royle
+# PERREM 2001 p/q arm ratios are off in ALT
+# Henson 2010 Assaying and investigating Alternative Lengthening of Telomeres activity in human cells and cancers
+# this has the X chromosome
+# p / q is 10 - 0.1
+# ALT makes the ratio of p/q weird. Expected to be unchanged if ALT turned off.
+# Henson 2010 Assaying and investigating Alternative Lengthening of Telomeres activity in human cells and cancer
+#  Losses of chromosomes 13, X, and 22, gains of 2, 3, 5, and 20, and translocation/deletion events involving several common chromosomal fragile sites (CFSs) were recurrent.
+ALT_telomere_lengths <- vector("list", 92)
+current_telomere_length_total <- 0
+current_telomere_length_Q <- 0
+current_telomere_length_P <- 0
+i <- 1
+generate_ALT_telomeres <- function() {
+  for(length in 1:46){
+    # print(length)
+    current_telomere_length <- runif(1, min=500, max=50000)
+    P_to_Q_ratio <- runif(1, 0.1, 10)
+    current_telomere_length_Q <- current_telomere_length/(P_to_Q_ratio+1)
+    current_telomere_length_P <- current_telomere_length - current_telomere_length_Q
+    current_sum_p_q <- current_telomere_length_Q+current_telomere_length_P
+    determine_P_to_Q_ratio <- current_telomere_length_P / current_telomere_length_Q
+    print(paste("current total length is ", current_telomere_length, "Q is ", current_telomere_length_Q, "P is ", current_telomere_length_P, " sum is ", current_sum_p_q))
+    print(paste("current P_to_Q_ratio is ", P_to_Q_ratio, "Q is ", current_telomere_length_Q, "P is ", current_telomere_length_P, " P_to_Q_ratio is ", determine_P_to_Q_ratio))
+    print("")
+    # current_telomere_length_P <- P_to_Q_ratio * current_telomere_length_Q
+    # ALT_telomere_lengths[[length]] <- length
+    #list.append(ALT_telomere_lengths, current_telomere_length_Q)
+    #list.append(ALT_telomere_lengths, current_telomere_length_P)
+    ALT_telomere_lengths[i] <- current_telomere_length_P 
+    i <- i + 1
+    ALT_telomere_lengths[i] <- current_telomere_length_Q
+    i <- i + 1
+  }
+  return(ALT_telomere_lengths)
+}
+ALT_telomere_lengths <- generate_ALT_telomeres()
+```
+
+```{r}
+barplot(as.numeric(ALT_telomere_lengths), names.arg=autosome_pairs_sex_chromosomes_and_arms, las=2)
+abline(h=5000, col="red", lwd=3)
+abline(h=3000, col="black", lwd=3)
+```
+
+```{r}
+barplot(as.numeric(ALT_telomere_lengths), ylim=c(0,50000))
+abline(h=5000, col="red", lwd=3)
+abline(h=3000, col="black", lwd=3)
+```
+
+
+```{r}
+barplot(as.numeric(ALT_telomere_lengths[1:46]), names.arg=autosome_pairs_sex_chromosomes_and_arms[1:46], las=2)
+abline(h=5000, col="red", lwd=3)
+abline(h=3000, col="black", lwd=3)
+```
+
+```{r}
+barplot(as.numeric(ALT_telomere_lengths[47:92]), names.arg=autosome_pairs_sex_chromosomes_and_arms[47:92], las=2)
+abline(h=5000, col="red", lwd=3)
+abline(h=3000, col="black", lwd=3)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
