@@ -1,5 +1,5 @@
 ---
-title: "Suda 2002 Telomere Lengths"
+title: "Suda_2002_Telomere_Modeling"
 author: "Dave_Halvorsen"
 date: "January 6, 2019"
 output: html_document
@@ -7,16 +7,12 @@ output: html_document
 
 ```{r}
 # according to Suda 2002 there should be a linear relationship between chromosome length and telomere length
-# Suda 2002 Table 1 chromosome size (megabases)
+# Suda 2002 Table 1 chromosome size (megabases) and telomere length (bp)
 chromosome_lengths <- c(246, 202, 193, 184, 173, 160, 146, 125, 110, 103, 100, 93, 85, 81, 62, 67, 48, 52)
-# Suda 2002 Table 1 telomere length (bp). This is after they subtacted 2000 bp (to remove subtelomeric region)
-telomere_lengths <- c(5681, 4987, 5018, 4589, 4302, 4127, 3922, 3708, 4045, 3624, 3460, 3109, 3077, 3007, 2750, 2913, 2735, 2806)
-# My Harley 2008 p53-mediated senescence includes subtelomeric regions, so I should add 2000 to each of these telomeres
-telomere_lengths <- telomere_lengths + 2000
-telomere_lengths
+telomere_lengths <- c(5681, 4978, 5018, 4589, 4302, 4127, 3922, 3708, 4045, 3624, 3460, 3109, 3077, 3007, 2750, 2913, 2735, 2806)
 # these should be 18 long cause that's how many rows Suda 2002 has
-#length(chromosome_lengths)
-#length(telomere_lengths)
+length(chromosome_lengths)
+length(telomere_lengths)
 plot(chromosome_lengths, telomere_lengths, main ="Telomere and Chromosome Lengths are Linearly Related", xlab="Chromosome Lengths (Mb)", ylab="Telomere Lenghts (bp)")
 ```
 
@@ -27,33 +23,31 @@ lm(telomere_lengths ~ chromosome_lengths)
 
 ```{r}
 # here I'm using abline to add the line of regression
-# it looks good! 
 plot(chromosome_lengths, telomere_lengths, main ="Telomere and Chromosome Lengths are Linearly Related", xlab="Chromosome Lengths (Mb)", ylab="Telomere Lenghts (bp)")
-abline(3920.25, 14.93)
+abline(1921.27 , 14.92)
 ```
 
 ```{r}
-# AWESOME! The y = mx + b is y = 14.93x + 3920.25
 # let's check the math here
-# an x of 50 should 4750ish for y
-14.93*50 + 3920.25
-# an x of 250 should be 7500ish on the y
-14.93*250 + 3920.25
+
+14.92*50 + 1921.27
+
+14.92*250 + 1921.27
 ```
 
 ```{r}
 # I'm assuming that this relationship will hold true for chromosomes X + Y
-# AND that p/q is 1 in telomerase (CITATION NEEDED) and that it's fine
+# AND that p/q is 1 in telomerase (Perrem 2001) and that it's fine
 # to think of chromsomes 1+2 having equal telomere lengths AND that same deal for 9-12
 # I need to calculate lengths for chromosome x and chromosome y
 # Morton 1991 Parameters of the human genome Table 1 has data I can play with
 # BUT, keep in mind that the chromosome Mb are slightly different from Suda 2002
 # using y=mx+b to get x length
 # NOTE that the Suda 2002 cell line is from a male, so it's XY
-chromosome_X_length <- 14.93*164 + 3920.25
+chromosome_X_length <- 14.92*164 + 1921.27
 chromosome_X_length
 # using y=mx+b to get y length
-chromosome_Y_length <- 14.93*59 + 3920.25
+chromosome_Y_length <- 14.92*59 + 1921.27
 chromosome_Y_length
 # adding in the missing telomere lengths
 chromosome_1_length <- telomere_lengths[1]
@@ -109,6 +103,18 @@ chrom_Y <- chromosome_Y_length
 chromosome_pair_1_telomere_lengths <- c(chrom_1, chrom_2, chrom_3, chrom_4, chrom_5, chrom_6, chrom_7, chrom_8, chrom_9, chrom_10, chrom_11, chrom_12,chrom_13,chrom_14,chrom_15,chrom_16,chrom_17,chrom_18,chrom_19,chrom_20, chrom_21, chrom_22, chrom_X)
 # this set has the Y chromosome
 chromosome_pair_2_telomere_lengths <- c(chrom_1, chrom_2, chrom_3, chrom_4, chrom_5, chrom_6, chrom_7, chrom_8, chrom_9, chrom_10, chrom_11, chrom_12,chrom_13,chrom_14,chrom_15,chrom_16,chrom_17,chrom_18,chrom_19,chrom_20, chrom_21, chrom_22, chrom_Y)
+
+all_lengths <- c(chrom_1, chrom_2, chrom_3, chrom_4, chrom_5, chrom_6, chrom_7, chrom_8, chrom_9, chrom_10, chrom_11, chrom_12,chrom_13,chrom_14,chrom_15,chrom_16,chrom_17,chrom_18,chrom_19,chrom_20, chrom_21, chrom_22, chrom_X, chrom_Y)
+mean(all_lengths)
+(min(all_lengths)-2000)/48
+(mean(all_lengths)-2000)/48
+measured_lengths <- c(chrom_1, chrom_3, chrom_4, chrom_5, chrom_6, chrom_7, chrom_8, chrom_9,chrom_13,chrom_14,chrom_15,chrom_16,chrom_17,chrom_18,chrom_19,chrom_20, chrom_21, chrom_22)
+(mean(measured_lengths))
+(min(measured_lengths)-2000)/48
+(mean(measured_lengths)-2000)/48
+# paper
+(2735-2000)/48
+(3998-2000)/48
 ```
 
 ```{r}
@@ -119,8 +125,7 @@ chromosome_pair_2_names <- c((1:22), "Y")
 
 ```{r}
 barplot(chromosome_pair_1_telomere_lengths, names.arg=chromosome_pair_1_names, las=2, main ="TEL+ Telomere Lengths for Chromosome Pair 1", xlab="Chromosome", ylab="Telomere Lenghts (bp)")
-abline(h=5000, col="red", lwd=3)
-abline(h=3000, col="black", lwd=3)
+# abline(h=2735)
 ```
 
 
@@ -129,8 +134,6 @@ abline(h=3000, col="black", lwd=3)
 ```{r}
 # this has the y chromosome
 barplot(chromosome_pair_2_telomere_lengths, names.arg=chromosome_pair_2_names, las=2, main ="TEL+ Telomere Lengths for Chromosome Pair 2", xlab="Chromosome", ylab="Telomere Lenghts (bp)")
-abline(h=5000, col="red", lwd=3)
-abline(h=3000, col="black", lwd=3)
 ```
 
 ```{r}
@@ -139,54 +142,57 @@ abline(h=3000, col="black", lwd=3)
 # I'll pool everything together
 telomerase_chromosome_lengths <- c(chrom_1, chrom_2, chrom_3, chrom_4, chrom_5, chrom_6, chrom_7, chrom_8, chrom_9, chrom_10, chrom_11, chrom_12,chrom_13,chrom_14,chrom_15,chrom_16,chrom_17,chrom_18,chrom_19,chrom_20, chrom_21, chrom_22, chrom_X, chrom_Y)
 telomerase_chromosome_names <- c((1:22), "X", "Y")
-barplot(telomerase_chromosome_lengths, names.arg=telomerase_chromosome_names, las=2, main ="TEL+ Telomere Lengths for Chromosomes", xlab="Chromosome", ylab="Telomere Lenghts (bp)")
-abline(h=5000, col="red", lwd=3)
-abline(h=3000, col="black", lwd=3)
+barplot(telomerase_chromosome_lengths, names.arg=telomerase_chromosome_names, las=2, main ="GM130B Telomere Lengths", xlab="Chromosome", ylab="Telomere Lenghts (bp)")
 ```
 
 ```{r}
 # This models telomere shortening for -TMM OR TEL+ Telomerase Inhibition of Suda 2002 Cells
-
-above_three_thousand <- TRUE
+above_zero <- TRUE
 division_number <- 0
-telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths -4000
-while(above_three_thousand) {
+telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths -2000
+while(above_zero) {
   telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths_play - 48
   #print(telomerase_chromosome_lengths_play)
   #print(division_number)
-  barplot(telomerase_chromosome_lengths_play, names.arg=telomerase_chromosome_names, las=2, main = paste("Mutant p53 Telomere Shortening After ", division_number, " Divisions"), xlab="Chromosome", ylab="Telomere Lenghts (bp)")
+  barplot(telomerase_chromosome_lengths_play, names.arg=telomerase_chromosome_names, las=2, main = paste("Telomere Shortening After ", division_number, " Divisions"), xlab="Chromosome", ylab="Telomere Lenghts (bp)")
   abline(h=5000, col="red", lwd=3)
   abline(h=3000, col="black", lwd=3)
   division_number <- division_number + 1
+  # if(sum(mean(telomerase_chromosome_lengths_play) < 0) > 0)
   if(sum((telomerase_chromosome_lengths_play) < 0) > 0) {
-    above_three_thousand <- FALSE
+    above_zero <- FALSE
   }
 }
 
 ```
 
 ```{r}
+# use the range of chromosomal telomere lengths to estimate the starting telomere lengths of all chromosomes
+# Sanders 2013 says human telomeres are estimated to be between 5,000 and 15,000 at birth
 telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths
-telomerase_chromosome_lengths_play
-mean(telomerase_chromosome_lengths)
+# telomerase_chromosome_lengths_play
+#mean(telomerase_chromosome_lengths)
 15000/max(telomerase_chromosome_lengths)
-max(telomerase_chromosome_lengths_play) - min(telomerase_chromosome_lengths_play)
-sd(telomerase_chromosome_lengths_play)
+#max(telomerase_chromosome_lengths_play) - min(telomerase_chromosome_lengths_play)
+#sd(telomerase_chromosome_lengths_play)
 telomerase_chromosome_lengths_START <- telomerase_chromosome_lengths * 15000/max(telomerase_chromosome_lengths)
 telomerase_chromosome_lengths_START
+barplot(telomerase_chromosome_lengths_START, names.arg=telomerase_chromosome_names, las=2, main = "Estimated Initial Human Telomere Lengths", xlab="Chromosome", ylab="Telomere Lenghts (bp)")
+abline(h=5000, col="red", lty=2, lwd=3)
+abline(h=3000, col="black", lty=2, lwd=3)
 ```
 
 
 ```{r}
-# but what about WT starting telomere lengths and possible divisions w/ WT p53?
+# How long until senesence if starting at 15K? and -48bp on division Suda 2002
 above_five_thousand <- TRUE
 division_number <- 0
 telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths_START
 while(above_five_thousand) {
-  telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths_play - 50
+  telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths_play - 48
   #print(telomerase_chromosome_lengths_play)
   #print(division_number)
-  barplot(telomerase_chromosome_lengths_play, names.arg=telomerase_chromosome_names, las=2, main = paste("Mutant p53 Telomere Shortening After ", division_number, " Divisions"), xlab="Chromosome", ylab="Telomere Lenghts (bp)")
+  barplot(telomerase_chromosome_lengths_play, names.arg=telomerase_chromosome_names, las=2, main = paste("Senescence After Telomere Shortening From ", division_number, " Divisions"), xlab="Chromosome", ylab="Telomere Lenghts (bp)", ylim=c(0,15000))
   abline(h=5000, col="red", lwd=3)
   abline(h=3000, col="black", lwd=3)
   division_number <- division_number + 1
@@ -194,8 +200,24 @@ while(above_five_thousand) {
     above_five_thousand <- FALSE
   }
 }
+```
 
-
+```{r}
+# How long until senesence if starting at 15K? and -48bp on division Suda 2002
+# What if transforming mutations occur?
+above_five_thousand <- TRUE
+division_number <- 0
+telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths_START
+while(above_five_thousand) {
+  telomerase_chromosome_lengths_play <- telomerase_chromosome_lengths_play - 48
+  barplot(telomerase_chromosome_lengths_play, names.arg=telomerase_chromosome_names, las=2, main = paste("Telomere Shortening After ", division_number, " Divisions"), xlab="Chromosome", ylab="Telomere Lenghts (bp)")
+  abline(h=5000, col="red", lwd=3)
+  abline(h=3000, col="black", lwd=3)
+  division_number <- division_number + 1
+  if(sum(telomerase_chromosome_lengths_play < 5000) > 0) {
+    above_five_thousand <- FALSE
+  }
+}
 ```
 
 
